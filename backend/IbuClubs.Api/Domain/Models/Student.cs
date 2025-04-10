@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace IbuClubs.Api.Domain.Models;
 
 public class Student
 {
-    public int StudentId { get; set; }
+    [Column("student_id")]
+    public Guid StudentId { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
     public string Name { get; set; }

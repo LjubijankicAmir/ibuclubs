@@ -8,11 +8,11 @@ namespace IbuClubs.Api.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class ClubController(IClubService _clubService, IMapper _mapper) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAllClubs()
     {
         try
         {
@@ -30,7 +30,7 @@ public class ClubController(IClubService _clubService, IMapper _mapper) : Contro
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(string id)
+    public async Task<IActionResult> GetClubById(string id)
     {
         try
         {
@@ -62,7 +62,7 @@ public class ClubController(IClubService _clubService, IMapper _mapper) : Contro
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, UpdateClubDto clubDto)
+    public async Task<IActionResult> UpdateClub(string id, UpdateClubDto clubDto)
     {
         try
         {
@@ -81,7 +81,7 @@ public class ClubController(IClubService _clubService, IMapper _mapper) : Contro
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> DeleteClub(string id)
     {
         try
         {
