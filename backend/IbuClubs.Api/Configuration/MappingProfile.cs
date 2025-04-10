@@ -1,3 +1,4 @@
+using IbuClubs.Api.Contracts.DTOs.Activity;
 using IbuClubs.Api.Contracts.DTOs.Club;
 using IbuClubs.Api.Contracts.DTOs.Student;
 using IbuClubs.Api.Domain.Models;
@@ -14,9 +15,15 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ClubId, opt => opt.Ignore());
         CreateMap<UpdateClubDto, Club>()
             .ForMember(dest => dest.ClubId, opt => opt.Ignore());
+        
         CreateMap<CreateStudentDto, Student>()
             .ForMember(dest => dest.StudentId, opt => opt.Ignore());
         CreateMap<UpdateStudentDto, Student>()
             .ForMember(dest => dest.StudentId, opt => opt.Ignore());
+        
+        CreateMap<CreateActivityDto, Activity>()
+            .ForMember(dest => dest.ClubId, opt => opt.Ignore());
+        CreateMap<UpdateActivityDto, Activity>()
+            .ForMember(dest => dest.ClubId, opt => opt.Ignore());
     }
 }

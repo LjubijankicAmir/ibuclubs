@@ -17,8 +17,10 @@ builder.Services.AddDbContext<IbuClubsDbContext>(options =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ClubRepository>();
 builder.Services.AddScoped<StudentRepository>();
+builder.Services.AddScoped<ActivityRepository>();
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
