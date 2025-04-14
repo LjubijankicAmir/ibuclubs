@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 import { StudentsApi } from '../../api/apiService';
 import StudentsTable from '../../components/Tables/StudentsTable';
+import CreateStudentModal from '../../components/Modals/CreateModals/CreateStudentModal';
+
 
 const Students = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   const fetchStudents = () => {
     StudentsApi.getStudents()
@@ -46,6 +50,16 @@ const Students = () => {
     }
   };
 
+  const handleCreateStudent = (studentData) => {
+    StudentsApi.createStudent(studentData)
+      .then(() => {
+        fetchStudents();
+      })
+      .catch(() => {
+        alert('Error creating student');
+      });
+  };
+
   if (error) return <div>{error}</div>;
 
   return (
@@ -64,8 +78,23 @@ const Students = () => {
           <CircularProgress />
         </div>
       ) : (
+        <>
         <StudentsTable students={students} onUpdateStudent={handleUpdateStudent} onDeleteStudent={handleDeleteStudent} />
+        <div style={{ marginTop: '20px' }}>
+            <Button 
+            variant="contained" 
+            sx={{ backgroundColor: '#4176a4'}} 
+            onClick={() => setCreateModalOpen(true)}>
+              Create New Student
+            </Button>
+          </div>
+          </>
       )}
+      <CreateStudentModal 
+        open={createModalOpen} 
+        onClose={() => setCreateModalOpen(false)} 
+        onSubmit={handleCreateStudent} 
+      />
     </div>
   );
 };

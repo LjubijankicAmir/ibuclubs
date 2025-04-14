@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditStudentModal from '../Modals/EditStudentModal';
+import EditStudentModal from '../Modals/EditModals/EditStudentModal';
 import './Table.css';
 
 const StudentsTable = ({ students, onUpdateStudent, onDeleteStudent }) => {

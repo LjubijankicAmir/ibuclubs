@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditClubModal from '../Modals/EditClubModal';
+import EditClubModal from '../Modals/EditModals/EditClubModal';
 import './Table.css';
 
 const ClubsTable = ({ clubs, onUpdateClub, onDeleteClub }) => {
@@ -35,7 +35,7 @@ const ClubsTable = ({ clubs, onUpdateClub, onDeleteClub }) => {
     { field: 'clubId', headerName: 'ID', width: 300 },
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'description', headerName: 'Description', width: 150 },
-    { field: 'socialMediaLink', headerName: 'Social Media Link', width: 300 },
+    { field: 'socialMediaLink', headerName: 'Social Media Link', width: 200 },
     {
       field: 'actions',
       headerName: 'Actions',

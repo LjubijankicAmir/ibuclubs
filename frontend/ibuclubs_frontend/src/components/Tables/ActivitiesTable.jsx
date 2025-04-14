@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditActivityModal from '../Modals/EditActivityModal';
+import EditActivityModal from '../Modals/EditModals/EditActivityModal';
 import './Table.css';
 
 const ActivitiesTable = ({ activities, onUpdateActivity, onDeleteActivity }) => {
@@ -36,10 +36,10 @@ const ActivitiesTable = ({ activities, onUpdateActivity, onDeleteActivity }) => 
     { field: 'clubId', headerName: 'Club ID', width: 300 },
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'description', headerName: 'Description', width: 150 },
-    { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'time', headerName: 'Time', width: 150 },
-    { field: 'activityPoints', headerName: 'Activity Points', width: 50 },
-    { field: 'maxParticipants', headerName: 'Max Participants', width: 50 },
+    { field: 'date', headerName: 'Date', width: 100 },
+    { field: 'time', headerName: 'Time', width: 100 },
+    { field: 'activityPoints', headerName: 'Activity Points', width: 120 },
+    { field: 'maxParticipants', headerName: 'Max Participants', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',
