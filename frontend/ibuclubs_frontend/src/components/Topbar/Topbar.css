@@ -1,0 +1,33 @@
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #2d5f8b;
+    color: #ffffff;
+    height: 60px;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+}
+
+.hamburger-icon {
+    margin-right: 10px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 50px;
+    margin-right: 10px;
+}
+
+.app-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}

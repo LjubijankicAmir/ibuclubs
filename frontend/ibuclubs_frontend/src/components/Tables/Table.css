@@ -1,0 +1,14 @@
+.data-grid {
+    height: 400px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.data-grid .MuiDataGrid-columnHeaders {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.data-grid .MuiDataGrid-row:hover {
+    background-color: #e8f5e9;
+}
