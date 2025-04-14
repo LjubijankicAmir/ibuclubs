@@ -3,13 +3,12 @@ import { ActivitiesApi } from '../../api/apiService';
 import ActivitiesTable from '../../components/Tables/ActivitiesTable';
 import CircularProgress from '@mui/material/CircularProgress';
 
-
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchActivities = () => {
     ActivitiesApi.getActivities()
       .then((response) => {
         setActivities(Array.isArray(response.data) ? response.data : []);
@@ -19,7 +18,33 @@ const Activities = () => {
         setError('Error loading Activities');
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchActivities();
   }, []);
+
+  const handleUpdateActivity = (updatedActivity) => {
+    ActivitiesApi.updateActivity(updatedActivity)
+      .then(() => {
+        fetchActivities();
+      })
+      .catch(() => {
+        alert('Error updating activity');
+      });
+  };
+
+  const handleDeleteActivity = (activity) => {
+    if (window.confirm(`Are you sure you want to delete ${activity.name}?`)) {
+      ActivitiesApi.deleteActivity(activity.activityId)
+        .then(() => {
+          fetchActivities();
+        })
+        .catch(() => {
+          alert('Error deleting activity');
+        });
+    }
+  };
 
   if (error) return <div>{error}</div>;
 
@@ -37,9 +62,13 @@ const Activities = () => {
         >
           <CircularProgress />
         </div>
-      ) :
-        <ActivitiesTable activities={activities} />
-      }
+      ) : (
+        <ActivitiesTable
+          activities={activities}
+          onUpdateActivity={handleUpdateActivity}
+          onDeleteActivity={handleDeleteActivity}
+        />
+      )}
     </div>
   );
 };

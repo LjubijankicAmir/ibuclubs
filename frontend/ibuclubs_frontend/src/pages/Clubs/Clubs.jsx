@@ -3,23 +3,48 @@ import { ClubsApi } from '../../api/apiService';
 import ClubsTable from '../../components/Tables/ClubsTable';
 import CircularProgress from '@mui/material/CircularProgress';
 
-
 const Clubs = () => {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchClubs = () => {
     ClubsApi.getClubs()
       .then((response) => {
         setClubs(Array.isArray(response.data) ? response.data : []);
         setLoading(false);
       })
       .catch((err) => {
-        setError('Error loading Clubs');
+        setError('Error loading clubs');
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchClubs();
   }, []);
+
+  const handleUpdateClub = (updatedClub) => {
+    ClubsApi.updateClub(updatedClub)
+      .then(() => {
+        fetchClubs();
+      })
+      .catch(() => {
+        alert('Error updating club');
+      });
+  };
+
+  const handleDeleteClub = (club) => {
+    if (window.confirm(`Are you sure you want to delete ${club.name}?`)) {
+      ClubsApi.deleteClub(club.clubId)
+        .then(() => {
+          fetchClubs();
+        })
+        .catch(() => {
+          alert('Error deleting club');
+        });
+    }
+  };
 
   if (error) return <div>{error}</div>;
 
@@ -37,9 +62,13 @@ const Clubs = () => {
         >
           <CircularProgress />
         </div>
-      ) :
-        <ClubsTable clubs={clubs} />
-      }
+      ) : (
+        <ClubsTable
+          clubs={clubs}
+          onUpdateClub={handleUpdateClub}
+          onDeleteClub={handleDeleteClub}
+        />
+      )}
     </div>
   );
 };
