@@ -1,0 +1,1 @@
+enum BoxName { jwt }
