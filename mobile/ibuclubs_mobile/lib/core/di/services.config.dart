@@ -24,10 +24,12 @@ import 'package:ibuclubs_mobile/auth/token/data/interceptors/jwt_interceptor.dar
 import 'package:ibuclubs_mobile/auth/token/domain/repositories/jwt_repository.dart'
     as _i538;
 import 'package:ibuclubs_mobile/config/configuration.dart' as _i47;
+import 'package:ibuclubs_mobile/core/data/chopper_clients.dart' as _i687;
 import 'package:ibuclubs_mobile/core/data/serializers/request_to_json.dart'
     as _i561;
 import 'package:ibuclubs_mobile/core/data/serializers/serializers.dart'
     as _i479;
+import 'package:ibuclubs_mobile/core/presentation/routes.dart' as _i241;
 import 'package:injectable/injectable.dart' as _i526;
 
 const String _dev = 'dev';
@@ -45,8 +47,10 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final builtValueSerializers = _$BuiltValueSerializers();
+    final routers = _$Routers();
     gh.lazySingleton<_i138.Serializers>(
         () => builtValueSerializers.createSerializers);
+    gh.lazySingleton<_i241.AppRouter>(() => routers.appRouter);
     await gh.lazySingletonAsync<_i155.JwtLocalDataSource>(
       () => _i155.JwtLocalDataSource.initialize(),
       preResolve: true,
@@ -80,8 +84,17 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i698.JwtInjectionInterceptor(gh<_i538.JwtRepository>()));
     gh.lazySingleton<_i170.JwtAuthenticator>(
         () => _i170.JwtAuthenticator(gh<_i538.JwtRepository>()));
+    gh.lazySingleton<_i687.BaseChopperClient>(() => _i687.BaseChopperClient(
+          gh<_i47.Configuration>(),
+          gh<_i138.Serializers>(),
+          gh<_i170.JwtAuthenticator>(),
+          gh<_i698.JwtInjectionInterceptor>(),
+          gh<_i281.UnauthorizedRoutingInterceptor>(),
+        ));
     return this;
   }
 }
 
 class _$BuiltValueSerializers extends _i479.BuiltValueSerializers {}
+
+class _$Routers extends _i241.Routers {}
