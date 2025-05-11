@@ -1,23 +1,63 @@
 using IbuClubs.Api.Domain.Models;
-
-namespace IbuClubs.Api.Persistence.Data;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class IbuClubsDbContext(DbContextOptions<IbuClubsDbContext> options) : DbContext(options)
+namespace IbuClubs.Api.Persistence.Data
 {
-    public DbSet<Student> Students { get; set; }
-    public DbSet<Club> Clubs { get; set; }
-    public DbSet<Membership> Memberships { get; set; }
-    public DbSet<Activity> Activities { get; set; }
-    public DbSet<ActivityEnrollment> ActivityEnrollments { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class IbuClubsDbContext : IdentityDbContext<IdentityUser>
     {
-        modelBuilder.Entity<Membership>()
-            .HasKey(m => new { m.StudentId, m.ClubId });
+        public IbuClubsDbContext(DbContextOptions<IbuClubsDbContext> options)
+            : base(options)
+        {
+        }
 
-        modelBuilder.Entity<ActivityEnrollment>()
-            .HasKey(ae => new { ae.StudentId, ae.ActivityId });
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Club> Clubs { get; set; }
+        public DbSet<Membership> Memberships { get; set; }
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<ActivityEnrollment> ActivityEnrollments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Membership>(entity =>
+            {
+                entity.HasKey(m => new { m.StudentId, m.ClubId });
+                entity.HasOne(m => m.Student)
+                      .WithMany(s => s.Memberships)
+                      .HasForeignKey(m => m.StudentId);
+                entity.HasOne(m => m.Club)
+                      .WithMany(c => c.Memberships)
+                      .HasForeignKey(m => m.ClubId);
+            });
+
+            modelBuilder.Entity<ActivityEnrollment>(entity =>
+            {
+                entity.HasKey(ae => new { ae.StudentId, ae.ActivityId });
+                entity.HasOne(ae => ae.Student)
+                      .WithMany(s => s.ActivityEnrollments)
+                      .HasForeignKey(ae => ae.StudentId);
+                entity.HasOne(ae => ae.Activity)
+                      .WithMany(a => a.ActivityEnrollments)
+                      .HasForeignKey(ae => ae.ActivityId);
+            });
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.HasKey(rt => rt.Id);
+                entity.Property(rt => rt.Token)
+                      .IsRequired();
+                entity.Property(rt => rt.CreatedByIp)
+                      .IsRequired();
+
+                entity.HasOne(rt => rt.User)
+                      .WithMany()
+                      .HasForeignKey(rt => rt.UserId)
+                      .IsRequired();
+            });
+        }
     }
 }

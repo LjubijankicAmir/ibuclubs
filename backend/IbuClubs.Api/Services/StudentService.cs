@@ -3,6 +3,7 @@ using IbuClubs.Api.Contracts.DTOs.Student;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace IbuClubs.Api.Services;
 
@@ -10,11 +11,13 @@ public class StudentService : IStudentService
 {
     private readonly IMapper _mapper;
     private readonly StudentRepository _repository;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public StudentService(IMapper mapper, StudentRepository repository)
+    public StudentService(IMapper mapper, StudentRepository repository, UserManager<IdentityUser> userManager)
     {
         _mapper = mapper;
         _repository = repository;
+        _userManager = userManager;
     }
     
     public async Task<IEnumerable<Student>> GetAllStudentsAsync()
@@ -32,6 +35,14 @@ public class StudentService : IStudentService
     public async Task CreateStudentAsync(CreateStudentDto studentDto)
     {
         var student = _mapper.Map<CreateStudentDto, Student>(studentDto);
+
+        var identityUser = new IdentityUser
+        {
+            Email = student.Email,
+            UserName = student.Email
+        };
+        var result = await _userManager.CreateAsync(identityUser, student.Password);
+        if (!result.Succeeded) throw new ApplicationException(result.Errors.First().Description);
         student.StudentId = Guid.NewGuid();
         await _repository.AddAsync(student);
     }
