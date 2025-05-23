@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ibuclubs_mobile/core/di/services.dart';
 import 'package:ibuclubs_mobile/core/presentation/routes.dart';
+import 'package:ibuclubs_mobile/core/presentation/routes.gr.dart';
 import 'package:ibuclubs_mobile/core/presentation/style.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -48,15 +49,16 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final labelStyle = TextStyle(fontWeight: FontWeight.w600);
     return Scaffold(
+      backgroundColor: kPrimaryColor,
       resizeToAvoidBottomInset: false,
       body: AutoTabsRouter(
         duration: Duration.zero,
-        routes: const [],
+        routes: const [HomeRoute(), ActivitiesRoute(), ClubsRoute()],
         transitionBuilder: (context, child, animation) {
           final tabsRouter = context.tabsRouter;
           return SafeArea(
             child: Scaffold(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              backgroundColor: kBackgroundColor,
               bottomNavigationBar: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -66,8 +68,8 @@ class MainPage extends StatelessWidget {
                       context,
                     ).copyWith(splashFactory: NoSplash.splashFactory),
                     child: SalomonBottomBar(
-                      backgroundColor: kBackgroundColor,
-                      selectedItemColor: kPrimaryColor,
+                      backgroundColor: kPrimaryColor,
+                      selectedItemColor: kBackgroundColor,
                       currentIndex: tabsRouter.activeIndex,
                       onTap: (index) async {
                         if (tabsRouter.activeIndex == index) {
@@ -85,21 +87,31 @@ class MainPage extends StatelessWidget {
                       items: [
                         SalomonBottomBarItem(
                           title: Text('Home', style: labelStyle),
-                          icon: Icon(Icons.home_rounded),
+                          icon: Icon(
+                            Icons.home_rounded,
+                            color: kBackgroundColor,
+                          ),
                         ),
                         SalomonBottomBarItem(
                           title: Text('Activites', style: labelStyle),
-                          icon: Icon(Icons.event_available_outlined),
+                          icon: Icon(
+                            Icons.event_available_outlined,
+                            color: kBackgroundColor,
+                          ),
                         ),
                         SalomonBottomBarItem(
                           title: Text('Clubs', style: labelStyle),
-                          icon: Icon(Icons.groups_2_outlined),
+                          icon: Icon(
+                            Icons.groups_2_outlined,
+                            color: kBackgroundColor,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
+              body: child,
             ),
           );
         },
