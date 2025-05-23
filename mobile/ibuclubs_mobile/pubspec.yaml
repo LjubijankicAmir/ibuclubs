@@ -29,6 +29,7 @@ dependencies:
   flutter_svg: ^2.0.17
   global_configuration: ^2.0.0
   salomon_bottom_bar: ^3.3.2
+  flutter_hooks: ^0.21.2
   rename_app: ^1.6.3
 
 

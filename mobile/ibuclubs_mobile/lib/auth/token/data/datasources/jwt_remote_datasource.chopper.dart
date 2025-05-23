@@ -32,7 +32,7 @@ final class _$JwtRemoteDataSource extends JwtRemoteDataSource {
 
   @override
   Future<Response<JwtDto>> refresh(RefreshTokenDto body) {
-    final Uri $url = Uri.parse('/auth/refreshToken');
+    final Uri $url = Uri.parse('/auth/refresh');
     final $body = body;
     final Request $request = Request(
       'POST',

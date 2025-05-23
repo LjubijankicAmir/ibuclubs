@@ -4,6 +4,9 @@ const kPrimaryDarkColor = Color(0xFF2c6089);
 const kPrimaryColor = Color(0xFF4176a4);
 const kPrimaryLightColor = Color(0xFF37c6d2);
 const kBackgroundColor = Color(0xFFf2f3f8);
+const kInputFieldColor = Color(0xFFf1f1f1);
+const kErrorColor = Color.fromRGBO(255, 0, 0, 1);
+final kHintColor = Colors.black.withValues(alpha: 0.6);
 
 const kDefaultPadding = EdgeInsets.all(16.0);
 const kDefaultSmallPadding = EdgeInsets.all(8.0);
@@ -24,6 +27,38 @@ final lightTheme = ThemeData.light().copyWith(
   primaryColorDark: kPrimaryDarkColor,
   primaryColorLight: kPrimaryLightColor,
   scaffoldBackgroundColor: kBackgroundColor,
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: kInputFieldColor,
+    hintStyle: TextStyle(color: kHintColor, fontSize: kDefaultFontSize),
+    border: OutlineInputBorder(
+      borderRadius: kDefaultBorderRadius,
+      borderSide: BorderSide.none,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: kDefaultBorderRadius,
+      borderSide: BorderSide(color: kPrimaryLightColor, width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: kDefaultBorderRadius,
+      borderSide: BorderSide(color: kErrorColor, width: 2),
+    ),
+    labelStyle: TextStyle(fontSize: kDefaultFontSize),
+    floatingLabelStyle: WidgetStateTextStyle.resolveWith((
+      Set<WidgetState> states,
+    ) {
+      if (states.contains(WidgetState.error)) {
+        return const TextStyle(color: kErrorColor);
+      }
+      if (states.contains(WidgetState.focused)) {
+        return const TextStyle(color: kPrimaryLightColor);
+      }
+      return TextStyle(color: kHintColor);
+    }),
+    errorStyle: const TextStyle(color: kErrorColor),
+    contentPadding: kDefaultSmallPadding,
+    floatingLabelAlignment: FloatingLabelAlignment.start,
+  ),
   textTheme: ThemeData.light().textTheme.copyWith(
     titleLarge: TextStyle(
       fontSize: 24,

@@ -17,6 +17,6 @@ abstract class JwtRemoteDataSource extends ChopperService {
   @POST(path: '/login')
   Future<Response<JwtDto>> get(@Body() SignInDto body);
 
-  @POST(path: '/refreshToken')
+  @POST(path: '/refresh')
   Future<Response<JwtDto>> refresh(@Body() RefreshTokenDto body);
 }

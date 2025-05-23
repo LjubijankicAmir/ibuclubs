@@ -10,6 +10,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:built_value/serializer.dart' as _i138;
 import 'package:get_it/get_it.dart' as _i174;
+import 'package:ibuclubs_mobile/auth/authentication/sign_in/application/bloc/sign_in_bloc.dart'
+    as _i598;
 import 'package:ibuclubs_mobile/auth/data/auth_chopper_client.dart' as _i367;
 import 'package:ibuclubs_mobile/auth/data/interceptors/unauthorized_routing_interceptor.dart'
     as _i281;
@@ -30,6 +32,7 @@ import 'package:ibuclubs_mobile/core/data/serializers/request_to_json.dart'
 import 'package:ibuclubs_mobile/core/data/serializers/serializers.dart'
     as _i479;
 import 'package:ibuclubs_mobile/core/presentation/routes.dart' as _i241;
+import 'package:ibuclubs_mobile/splash/application/splash_bloc.dart' as _i729;
 import 'package:injectable/injectable.dart' as _i526;
 
 const String _dev = 'dev';
@@ -84,6 +87,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i698.JwtInjectionInterceptor(gh<_i538.JwtRepository>()));
     gh.lazySingleton<_i170.JwtAuthenticator>(
         () => _i170.JwtAuthenticator(gh<_i538.JwtRepository>()));
+    gh.factory<_i729.SplashBloc>(
+        () => _i729.SplashBloc(gh<_i538.JwtRepository>()));
+    gh.factory<_i598.SignInBloc>(
+        () => _i598.SignInBloc(gh<_i538.JwtRepository>()));
     gh.lazySingleton<_i687.BaseChopperClient>(() => _i687.BaseChopperClient(
           gh<_i47.Configuration>(),
           gh<_i138.Serializers>(),

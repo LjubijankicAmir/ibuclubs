@@ -8,6 +8,9 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ErrorModel.serializer)
+      ..add(JwtDto.serializer)
+      ..add(RefreshTokenDto.serializer)
+      ..add(SignInDto.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>()))

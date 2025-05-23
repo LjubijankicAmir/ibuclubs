@@ -18,16 +18,21 @@ class _$JwtDtoSerializer implements StructuredSerializer<JwtDto> {
   Iterable<Object?> serialize(Serializers serializers, JwtDto object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'token',
-      serializers.serialize(object.token,
+      'accessToken',
+      serializers.serialize(object.accessToken,
           specifiedType: const FullType(String)),
       'refreshToken',
       serializers.serialize(object.refreshToken,
           specifiedType: const FullType(String)),
-      'role',
-      serializers.serialize(object.role, specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.role;
+    if (value != null) {
+      result
+        ..add('role')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -42,8 +47,8 @@ class _$JwtDtoSerializer implements StructuredSerializer<JwtDto> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'token':
-          result.token = serializers.deserialize(value,
+        case 'accessToken':
+          result.accessToken = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
         case 'refreshToken':
@@ -52,7 +57,7 @@ class _$JwtDtoSerializer implements StructuredSerializer<JwtDto> {
           break;
         case 'role':
           result.role = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -63,22 +68,21 @@ class _$JwtDtoSerializer implements StructuredSerializer<JwtDto> {
 
 class _$JwtDto extends JwtDto {
   @override
-  final String token;
+  final String accessToken;
   @override
   final String refreshToken;
   @override
-  final String role;
+  final String? role;
 
   factory _$JwtDto([void Function(JwtDtoBuilder)? updates]) =>
       (new JwtDtoBuilder()..update(updates))._build();
 
-  _$JwtDto._(
-      {required this.token, required this.refreshToken, required this.role})
+  _$JwtDto._({required this.accessToken, required this.refreshToken, this.role})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(token, r'JwtDto', 'token');
+    BuiltValueNullFieldError.checkNotNull(
+        accessToken, r'JwtDto', 'accessToken');
     BuiltValueNullFieldError.checkNotNull(
         refreshToken, r'JwtDto', 'refreshToken');
-    BuiltValueNullFieldError.checkNotNull(role, r'JwtDto', 'role');
   }
 
   @override
@@ -92,7 +96,7 @@ class _$JwtDto extends JwtDto {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is JwtDto &&
-        token == other.token &&
+        accessToken == other.accessToken &&
         refreshToken == other.refreshToken &&
         role == other.role;
   }
@@ -100,7 +104,7 @@ class _$JwtDto extends JwtDto {
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, token.hashCode);
+    _$hash = $jc(_$hash, accessToken.hashCode);
     _$hash = $jc(_$hash, refreshToken.hashCode);
     _$hash = $jc(_$hash, role.hashCode);
     _$hash = $jf(_$hash);
@@ -110,7 +114,7 @@ class _$JwtDto extends JwtDto {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'JwtDto')
-          ..add('token', token)
+          ..add('accessToken', accessToken)
           ..add('refreshToken', refreshToken)
           ..add('role', role))
         .toString();
@@ -120,9 +124,9 @@ class _$JwtDto extends JwtDto {
 class JwtDtoBuilder implements Builder<JwtDto, JwtDtoBuilder> {
   _$JwtDto? _$v;
 
-  String? _token;
-  String? get token => _$this._token;
-  set token(String? token) => _$this._token = token;
+  String? _accessToken;
+  String? get accessToken => _$this._accessToken;
+  set accessToken(String? accessToken) => _$this._accessToken = accessToken;
 
   String? _refreshToken;
   String? get refreshToken => _$this._refreshToken;
@@ -137,7 +141,7 @@ class JwtDtoBuilder implements Builder<JwtDto, JwtDtoBuilder> {
   JwtDtoBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _token = $v.token;
+      _accessToken = $v.accessToken;
       _refreshToken = $v.refreshToken;
       _role = $v.role;
       _$v = null;
@@ -162,11 +166,11 @@ class JwtDtoBuilder implements Builder<JwtDto, JwtDtoBuilder> {
   _$JwtDto _build() {
     final _$result = _$v ??
         new _$JwtDto._(
-          token:
-              BuiltValueNullFieldError.checkNotNull(token, r'JwtDto', 'token'),
+          accessToken: BuiltValueNullFieldError.checkNotNull(
+              accessToken, r'JwtDto', 'accessToken'),
           refreshToken: BuiltValueNullFieldError.checkNotNull(
               refreshToken, r'JwtDto', 'refreshToken'),
-          role: BuiltValueNullFieldError.checkNotNull(role, r'JwtDto', 'role'),
+          role: role,
         );
     replace(_$result);
     return _$result;

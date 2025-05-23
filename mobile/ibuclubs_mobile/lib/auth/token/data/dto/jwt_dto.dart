@@ -5,9 +5,9 @@ import 'package:ibuclubs_mobile/auth/token/domain/models/jwt.dart';
 part 'jwt_dto.g.dart';
 
 abstract class JwtDto implements Built<JwtDto, JwtDtoBuilder> {
-  String get token;
+  String get accessToken;
   String get refreshToken;
-  String get role;
+  String? get role;
 
   factory JwtDto([void Function(JwtDtoBuilder) updates]) = _$JwtDto;
 
@@ -16,6 +16,6 @@ abstract class JwtDto implements Built<JwtDto, JwtDtoBuilder> {
   static Serializer<JwtDto> get serializer => _$jwtDtoSerializer;
 
   Jwt toJwt() {
-    return Jwt(token: token, refreshToken: refreshToken, role: role);
+    return Jwt(token: accessToken, refreshToken: refreshToken, role: role);
   }
 }

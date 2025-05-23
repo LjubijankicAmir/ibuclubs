@@ -19,7 +19,7 @@ class JwtAdapter extends TypeAdapter<Jwt> {
     return Jwt(
       token: fields[0] as String,
       refreshToken: fields[1] as String,
-      role: fields[2] as String,
+      role: fields[2] as String?,
     );
   }
 

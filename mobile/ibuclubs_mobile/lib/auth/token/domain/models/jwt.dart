@@ -11,7 +11,7 @@ class Jwt {
   final String refreshToken;
 
   @HiveField(2)
-  final String role;
+  final String? role;
 
   Jwt({required this.token, required this.refreshToken, required this.role});
 }
