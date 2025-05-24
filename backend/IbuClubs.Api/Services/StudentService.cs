@@ -35,15 +35,15 @@ public class StudentService : IStudentService
     public async Task CreateStudentAsync(CreateStudentDto studentDto)
     {
         var student = _mapper.Map<CreateStudentDto, Student>(studentDto);
-
+        student.StudentId = Guid.NewGuid();
         var identityUser = new IdentityUser
         {
+            Id = student.StudentId.ToString(),
             Email = student.Email,
             UserName = student.Email
         };
         var result = await _userManager.CreateAsync(identityUser, student.Password);
         if (!result.Succeeded) throw new ApplicationException(result.Errors.First().Description);
-        student.StudentId = Guid.NewGuid();
         await _repository.AddAsync(student);
     }
 

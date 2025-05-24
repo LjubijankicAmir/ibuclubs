@@ -28,10 +28,12 @@ namespace IbuClubs.Api.Persistence.Data
                 entity.HasKey(m => new { m.StudentId, m.ClubId });
                 entity.HasOne(m => m.Student)
                       .WithMany(s => s.Memberships)
-                      .HasForeignKey(m => m.StudentId);
+                      .HasForeignKey(m => m.StudentId)
+                      .OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(m => m.Club)
                       .WithMany(c => c.Memberships)
-                      .HasForeignKey(m => m.ClubId);
+                      .HasForeignKey(m => m.ClubId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<ActivityEnrollment>(entity =>
@@ -39,10 +41,12 @@ namespace IbuClubs.Api.Persistence.Data
                 entity.HasKey(ae => new { ae.StudentId, ae.ActivityId });
                 entity.HasOne(ae => ae.Student)
                       .WithMany(s => s.ActivityEnrollments)
-                      .HasForeignKey(ae => ae.StudentId);
+                      .HasForeignKey(ae => ae.StudentId)
+                      .OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(ae => ae.Activity)
                       .WithMany(a => a.ActivityEnrollments)
-                      .HasForeignKey(ae => ae.ActivityId);
+                      .HasForeignKey(ae => ae.ActivityId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<RefreshToken>(entity =>

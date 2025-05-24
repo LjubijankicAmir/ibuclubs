@@ -17,6 +17,39 @@ public class ClubRepository(IbuClubsDbContext context) : IRepository<Club>
         return await context.Clubs.FindAsync(Guid.Parse(id));
     }
 
+    public async Task EnrollUserAsync(string userId, string clubId)
+    {
+        var studentGuid = Guid.Parse(userId);
+        var clubGuid = Guid.Parse(clubId);
+        var club = await context.Clubs.FindAsync(Guid.Parse(clubId));
+        
+        if (club == null)
+            throw new KeyNotFoundException($"Club with id {clubId} not found");
+        
+        
+        var alreadyEnrolled = await context.Memberships.AnyAsync(m => m.StudentId == studentGuid && m.ClubId == clubGuid);
+        if (alreadyEnrolled) throw new InvalidOperationException("Already enrolled");
+
+        context.Memberships.Add(new Membership
+        {
+            StudentId = studentGuid,
+            ClubId = clubGuid,
+            Role = "Member"
+        });
+        
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<Club>> GetByUserIdAsync(string userId)
+    {
+        var userGuid = Guid.Parse(userId);
+        return await context.Memberships
+            .Where(m => m.StudentId == userGuid)
+            .Include(m => m.Club)
+            .Select(m => m.Club)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Club club)
     {
         await context.Clubs.AddAsync(club);

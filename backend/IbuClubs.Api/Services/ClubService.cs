@@ -3,6 +3,7 @@ using IbuClubs.Api.Contracts.DTOs.Club;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Domain.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IbuClubs.Api.Services;
 
@@ -26,6 +27,17 @@ public class ClubService : IClubService
     {
         var club = await _repository.GetByIdAsync(id);
         return club;
+    }
+
+    public async Task EnrollUserAsync(string userId, string clubId)
+    {
+        await _repository.EnrollUserAsync(userId, clubId);        
+    }
+
+    public async Task<IEnumerable<Club>> GetByUserIdAsync(string userId)
+    {
+        var clubs = await _repository.GetByUserIdAsync(userId);
+        return clubs;
     }
 
     public async Task CreateClubAsync(CreateClubDto clubDto)

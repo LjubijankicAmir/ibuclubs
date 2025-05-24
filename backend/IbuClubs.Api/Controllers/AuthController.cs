@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using IbuClubs.Api.Contracts.DTOs.Auth;
 using IbuClubs.Api.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Persistence.Data;
 using IbuClubs.Api.Contracts.DTOs.Auth;
+using Microsoft.AspNetCore.Authorization;
 using RefreshRequest = Microsoft.AspNetCore.Identity.Data.RefreshRequest;
 
 namespace IbuClubs.Api.Controllers;
@@ -83,5 +85,13 @@ public class AuthController : ControllerBase
         _db.SaveChanges();
 
         return NoContent();
+    }
+
+    [HttpGet("test")]
+    [Authorize]
+    public IActionResult Test()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return Ok($"Authenticated: {userId}");
     }
 }
