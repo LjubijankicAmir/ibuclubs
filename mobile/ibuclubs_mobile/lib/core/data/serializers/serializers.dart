@@ -7,11 +7,12 @@ import 'package:ibuclubs_mobile/auth/authentication/sign_in/data/dto/sign_in_dto
 import 'package:ibuclubs_mobile/auth/token/data/dto/jwt_dto.dart';
 import 'package:ibuclubs_mobile/auth/token/data/dto/refresh_token_dto.dart';
 import 'package:ibuclubs_mobile/core/data/models/error_model.dart';
+import 'package:ibuclubs_mobile/features/clubs/data/dto/club_dto.dart';
 import 'package:injectable/injectable.dart';
 
 part 'serializers.g.dart';
 
-@SerializersFor([ErrorModel, SignInDto, JwtDto, RefreshTokenDto])
+@SerializersFor([ErrorModel, SignInDto, JwtDto, RefreshTokenDto, ClubDto])
 final Serializers serializers = _$serializers;
 
 @module

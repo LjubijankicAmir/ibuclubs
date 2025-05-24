@@ -53,11 +53,34 @@ class MainPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: AutoTabsRouter(
         duration: Duration.zero,
-        routes: const [HomeRoute(), ActivitiesRoute(), ClubsRoute()],
+        routes: const [HomeRoute(), ClubsRoute(), ActivitiesRoute()],
         transitionBuilder: (context, child, animation) {
           final tabsRouter = context.tabsRouter;
           return SafeArea(
             child: Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  tabsRouter.activeIndex == 0
+                      ? 'Home'
+                      : tabsRouter.activeIndex == 1
+                      ? 'Clubs'
+                      : 'Activities',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: kBackgroundColor,
+                  ),
+                ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.settings, color: kBackgroundColor),
+                    onPressed: () {},
+                  ),
+                ],
+                centerTitle: true,
+                backgroundColor: kPrimaryColor,
+                elevation: 0,
+              ),
               backgroundColor: kBackgroundColor,
               bottomNavigationBar: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -93,16 +116,16 @@ class MainPage extends StatelessWidget {
                           ),
                         ),
                         SalomonBottomBarItem(
-                          title: Text('Activites', style: labelStyle),
+                          title: Text('Clubs', style: labelStyle),
                           icon: Icon(
-                            Icons.event_available_outlined,
+                            Icons.groups_2_outlined,
                             color: kBackgroundColor,
                           ),
                         ),
                         SalomonBottomBarItem(
-                          title: Text('Clubs', style: labelStyle),
+                          title: Text('Activites', style: labelStyle),
                           icon: Icon(
-                            Icons.groups_2_outlined,
+                            Icons.event_available_outlined,
                             color: kBackgroundColor,
                           ),
                         ),

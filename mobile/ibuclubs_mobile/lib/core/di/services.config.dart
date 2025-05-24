@@ -32,6 +32,12 @@ import 'package:ibuclubs_mobile/core/data/serializers/request_to_json.dart'
 import 'package:ibuclubs_mobile/core/data/serializers/serializers.dart'
     as _i479;
 import 'package:ibuclubs_mobile/core/presentation/routes.dart' as _i241;
+import 'package:ibuclubs_mobile/features/clubs/application/clubs_bloc.dart'
+    as _i776;
+import 'package:ibuclubs_mobile/features/clubs/data/datasources/clubs_remote_datasource.dart'
+    as _i1043;
+import 'package:ibuclubs_mobile/features/clubs/domain/repository/clubs_repository.dart'
+    as _i271;
 import 'package:ibuclubs_mobile/splash/application/splash_bloc.dart' as _i729;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -98,6 +104,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i698.JwtInjectionInterceptor>(),
           gh<_i281.UnauthorizedRoutingInterceptor>(),
         ));
+    gh.lazySingleton<_i1043.ClubsRemoteDatasource>(() =>
+        _i1043.ClubsRemoteDatasource.create(gh<_i687.BaseChopperClient>()));
+    gh.lazySingleton<_i271.ClubsRepository>(
+        () => _i271.ClubsRepository(gh<_i1043.ClubsRemoteDatasource>()));
+    gh.factory<_i776.ClubsBloc>(
+        () => _i776.ClubsBloc(gh<_i271.ClubsRepository>()));
     return this;
   }
 }
