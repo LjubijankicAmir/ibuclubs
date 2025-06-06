@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:chopper/chopper.dart';
 import 'package:ibuclubs_mobile/core/data/chopper_clients.dart';
+import 'package:ibuclubs_mobile/features/clubs/club_details/data/club_details_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/club_dto.dart';
 import 'package:injectable/injectable.dart';
 
@@ -18,4 +19,7 @@ abstract class ClubsRemoteDatasource extends ChopperService {
 
   @GET(path: 'getAllClubs')
   Future<Response<BuiltList<ClubDto>>> getAllClubs();
+
+  @GET(path: '/getClubById/{clubId}')
+  Future<Response<ClubDetailsDto>> getClubById(@Path('clubId') String clubId);
 }

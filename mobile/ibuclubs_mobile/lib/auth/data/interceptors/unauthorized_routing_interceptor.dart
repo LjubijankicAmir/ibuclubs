@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
+import 'package:ibuclubs_mobile/core/presentation/routes.gr.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ibuclubs_mobile/core/presentation/routes.dart';
 
 @lazySingleton
 class UnauthorizedRoutingInterceptor implements Interceptor {
-  const UnauthorizedRoutingInterceptor();
+  final AppRouter _appRouter;
+
+  UnauthorizedRoutingInterceptor(this._appRouter);
 
   @override
   FutureOr<Response<BodyType>> intercept<BodyType>(
@@ -14,7 +18,7 @@ class UnauthorizedRoutingInterceptor implements Interceptor {
     final response = await chain.proceed(chain.request);
 
     if (response.statusCode == 401) {
-      // navigate to auth screen
+      _appRouter.replaceAll([SignInRoute()]);
     }
 
     return response;

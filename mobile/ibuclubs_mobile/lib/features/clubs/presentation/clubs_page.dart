@@ -22,48 +22,71 @@ class ClubsPage extends StatelessWidget {
                   () => Center(
                     child: CircularProgressIndicator(color: kPrimaryColor),
                   ),
-              failed: (failure) => SizedBox.shrink(),
+              failed: (failure) => const SizedBox.shrink(),
               success:
-                  (response) => SingleChildScrollView(
-                    child: Padding(
-                      padding: kDefaultPadding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          (response.result.myClubs.isNotEmpty)
-                              ? Text(
-                                'My Clubs',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
+                  (response) => Container(
+                    color: Colors.grey.shade100,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: kDefaultPadding,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (response.result.myClubs.isNotEmpty) ...[
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
                                 ),
-                              )
-                              : SizedBox.shrink(),
-                          (response.result.myClubs.isNotEmpty)
-                              ? const SizedBox(height: 16)
-                              : SizedBox.shrink(),
-                          ...response.result.myClubs.map(
-                            (club) => ClubCard(
-                              name: club.name,
-                              description: club.description,
+                                decoration: BoxDecoration(
+                                  color: kPrimaryColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  'My Clubs',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              ...response.result.myClubs.map(
+                                (club) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: ClubCard(club: club),
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                            ],
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                'All Clubs',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 32),
-                          Text(
-                            'All Clubs',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                            const SizedBox(height: 12),
+                            ...response.result.allClubs.map(
+                              (club) => Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: ClubCard(club: club),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          ...response.result.allClubs.map(
-                            (club) => ClubCard(
-                              name: club.name,
-                              description: club.description,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

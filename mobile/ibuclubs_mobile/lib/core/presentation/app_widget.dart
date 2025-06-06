@@ -74,7 +74,9 @@ class MainPage extends StatelessWidget {
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.settings, color: kBackgroundColor),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushRoute(const SettingsRoute());
+                    },
                   ),
                 ],
                 centerTitle: true,

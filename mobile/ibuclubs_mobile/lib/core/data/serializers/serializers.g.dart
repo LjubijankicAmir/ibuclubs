@@ -7,6 +7,7 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(ClubDetailsDto.serializer)
       ..add(ClubDto.serializer)
       ..add(ErrorModel.serializer)
       ..add(JwtDto.serializer)

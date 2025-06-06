@@ -38,4 +38,15 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
     );
     return client.send<BuiltList<ClubDto>, ClubDto>($request);
   }
+
+  @override
+  Future<Response<ClubDetailsDto>> getClubById(String clubId) {
+    final Uri $url = Uri.parse('/club/getClubById/${clubId}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<ClubDetailsDto, ClubDetailsDto>($request);
+  }
 }
