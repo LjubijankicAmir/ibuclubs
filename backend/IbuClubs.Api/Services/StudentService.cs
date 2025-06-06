@@ -44,6 +44,7 @@ public class StudentService : IStudentService
         };
         var result = await _userManager.CreateAsync(identityUser, student.Password);
         if (!result.Succeeded) throw new ApplicationException(result.Errors.First().Description);
+        await _userManager.AddToRoleAsync(identityUser, "Student");
         await _repository.AddAsync(student);
     }
 

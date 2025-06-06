@@ -3,6 +3,7 @@ using AutoMapper;
 using IbuClubs.Api.Contracts.DTOs.Club;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
+using IbuClubs.Api.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ClubController(IClubService _clubService, IMapper _mapper) : ControllerBase
+public class ClubController(IClubService _clubService, IMapper _mapper, MembershipRepository _membershipRepository) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllClubs()
@@ -33,21 +34,44 @@ public class ClubController(IClubService _clubService, IMapper _mapper) : Contro
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetClubById(string id)
     {
         try
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
             var club = await _clubService.GetClubByIdAsync(id);
             if (club == null)
-            {
                 return NotFound();
-            }
-            return Ok(club);
+
+            var studentGuid = Guid.Parse(userId);
+            var clubGuid    = Guid.Parse(id);
+
+            var isEnrolled = await _membershipRepository
+                .GetByUserAndClubAsync(studentGuid, clubGuid) != null;
+            
+            var totalMembers = await _membershipRepository.CountByClubAsync(clubGuid);
+
+            var dto = new ClubDetailsDto
+            {
+                ClubId          = club.ClubId,
+                Name            = club.Name,
+                Description     = club.Description,
+                SocialMediaLink = club.SocialMediaLink,
+                Status          = club.Status,
+                MembershipCount = totalMembers,
+                IsEnrolled      = isEnrolled
+            };
+
+            return Ok(dto);
         }
         catch (Exception ex)
         {
             return StatusCode(500, $"Internal server error: {ex.Message}");
-        } 
+        }
     }
 
     [HttpGet()]
@@ -69,11 +93,14 @@ public class ClubController(IClubService _clubService, IMapper _mapper) : Contro
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateClub(CreateClubDto clubDto)
     {
         try
         {
-            await _clubService.CreateClubAsync(clubDto);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            await _clubService.CreateClubAsync(clubDto, userId);
             return Ok(new { message = "Club created successfully!" });
         }
         catch (Exception ex)
@@ -108,6 +135,30 @@ public class ClubController(IClubService _clubService, IMapper _mapper) : Contro
             return StatusCode(500, $"Internal server error: {exception.Message}");
         }
     }
+
+    [HttpPost("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Review(string id, [FromBody] ReviewClubDto dto)
+    {
+        try
+        {
+            await _clubService.ReviewClubAsync(id, dto.status);
+            return Ok($"Club marked as {dto.status}");
+        }
+        catch (KeyNotFoundException keyException)
+        {
+            return NotFound(keyException.Message);
+        }
+        catch (InvalidOperationException invalidOperationException)
+        {
+            return BadRequest(invalidOperationException.Message);
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
+        }
+    }
+    
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateClub(string id, UpdateClubDto clubDto)

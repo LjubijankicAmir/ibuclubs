@@ -109,6 +109,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ClubRepository>();
 builder.Services.AddScoped<StudentRepository>();
 builder.Services.AddScoped<ActivityRepository>();
+builder.Services.AddScoped<MembershipRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
@@ -116,6 +117,37 @@ builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    foreach (var role in new[] { "Admin", "Student" })
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
+    }
+    
+    var adminEmail = "admin@stu.ibu.edu.ba";
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail };
+        var result = await userManager.CreateAsync(adminUser, "Admin123.");
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                throw new Exception(error.Description);
+            }
+        }
+    }
+}
 
 app.UseCors("AllowDevClient");
 
