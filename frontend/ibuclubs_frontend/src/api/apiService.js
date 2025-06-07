@@ -9,6 +9,19 @@ const ApiClient = axios.create({
     },
 });
 
+ApiClient.interceptors.request.use(cfg => {
+    const token = localStorage.getItem('accessToken');
+    if (token && cfg.headers) cfg.headers.Authorization = `Bearer ${token}`;
+    return cfg;
+  });
+  
+  export const AuthApi = {
+    login: (data) =>
+      ApiClient.post('auth/login', data),
+    refresh: (token) =>
+      ApiClient.post('auth/refresh', { refreshToken: token }),
+  };
+
 export const StudentsApi = {
     getStudents: async () => ApiClient.get('student/getallstudents'),
     createStudent: async (data) => ApiClient.post('student/createstudent', data),
@@ -23,6 +36,8 @@ export const ClubsApi = {
     updateClub: async (data) => ApiClient.put(`club/updateclub/${data.id}`, data),
     deleteClub: async (id) => ApiClient.delete(`club/deleteclub/${id}`),
     getClubById: async (id) => ApiClient.get(`club/getclubbyid/${id}`),
+    reviewClub:    (id, status) =>
+        ApiClient.post(`club/review/${id}`, { status }),
 }
 
 export const ActivitiesApi = {

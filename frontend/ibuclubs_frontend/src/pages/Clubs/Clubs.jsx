@@ -59,6 +59,16 @@ const Clubs = () => {
       });
   }
 
+  const handleReviewClub = (clubId, status) => {
+    ClubsApi.reviewClub(clubId, status)
+      .then(() => {
+        fetchClubs();
+      })
+      .catch(() => {
+        alert('Error reviewing club');
+      });
+    }
+
   if (error) return <div>{error}</div>;
 
   return (
@@ -81,6 +91,7 @@ const Clubs = () => {
           clubs={clubs}
           onUpdateClub={handleUpdateClub}
           onDeleteClub={handleDeleteClub}
+          onReviewClub={handleReviewClub}
         />
         <div style={{ marginTop: '20px' }}>
             <Button 
