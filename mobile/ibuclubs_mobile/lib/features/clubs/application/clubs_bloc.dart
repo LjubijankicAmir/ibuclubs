@@ -21,7 +21,6 @@ class ClubsBloc extends Bloc<ClubsEvent, ClubsState> {
     Emitter<ClubsState> emit,
   ) async {
     emit(state.copyWith(requestState: RequestState.processing()));
-
     final allClubsResult = await _clubsRepository.getAllClubs();
     final myClubsResult = await _clubsRepository.getMyClubs();
 
@@ -31,12 +30,12 @@ class ClubsBloc extends Bloc<ClubsEvent, ClubsState> {
           (failure) => RequestState.failed(failure),
           (clubs) => myClubsResult.fold(
             (failure) => RequestState.failed(failure),
-            (myClubs) {
-              for (final club in myClubs) {
-                clubs.removeWhere((c) => c.id == club.id);
+            (myMemberships) {
+              for (final membership in myMemberships) {
+                clubs.removeWhere((c) => c.id == membership.club.id);
               }
               return RequestState.success(
-                Clubs(allClubs: clubs, myClubs: myClubs),
+                Clubs(allClubs: clubs, myClubs: myMemberships),
               );
             },
           ),

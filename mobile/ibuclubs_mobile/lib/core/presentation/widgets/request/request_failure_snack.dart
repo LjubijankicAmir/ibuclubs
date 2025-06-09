@@ -7,7 +7,7 @@ class RequestFailureSnack {
     ScaffoldMessenger.of(context).showSnackBar(
       FloatingSnackBar(
         text: failure.when(
-          badRequest: (e) => "Something went wrong",
+          badRequest: (e) => e.error,
           unauthorized: () => "Unauthorized",
           jwtExpired: () => "Session expired",
           notFound: () => "Not found",

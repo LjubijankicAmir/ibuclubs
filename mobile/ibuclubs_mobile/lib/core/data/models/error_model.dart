@@ -5,7 +5,7 @@ import 'package:built_value/serializer.dart';
 part 'error_model.g.dart';
 
 abstract class ErrorModel implements Built<ErrorModel, ErrorModelBuilder> {
-  BuiltList<String> get errors;
+  String get error;
 
   factory ErrorModel([void Function(ErrorModelBuilder) updates]) = _$ErrorModel;
   ErrorModel._();

@@ -18,19 +18,32 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
   final Type definitionType = ClubsRemoteDatasource;
 
   @override
-  Future<Response<BuiltList<ClubDto>>> getMyClubs() {
+  Future<Response<Unit>> createClub(CreateClubDto clubDto) {
+    final Uri $url = Uri.parse('/club/createClub');
+    final $body = clubDto;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<Unit, Unit>($request);
+  }
+
+  @override
+  Future<Response<BuiltList<MembershipDto>>> getMyClubs() {
     final Uri $url = Uri.parse('/club/getMyClubs');
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
     );
-    return client.send<BuiltList<ClubDto>, ClubDto>($request);
+    return client.send<BuiltList<MembershipDto>, MembershipDto>($request);
   }
 
   @override
   Future<Response<BuiltList<ClubDto>>> getAllClubs() {
-    final Uri $url = Uri.parse('/club/getAllClubs');
+    final Uri $url = Uri.parse('/club/getApprovedClubs');
     final Request $request = Request(
       'GET',
       $url,
@@ -48,5 +61,27 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
       client.baseUrl,
     );
     return client.send<ClubDetailsDto, ClubDetailsDto>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> enrollToClub(String clubId) {
+    final Uri $url = Uri.parse('/club/enroll/${clubId}');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> leaveClub(String clubId) {
+    final Uri $url = Uri.parse('/club/leave/${clubId}');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
   }
 }

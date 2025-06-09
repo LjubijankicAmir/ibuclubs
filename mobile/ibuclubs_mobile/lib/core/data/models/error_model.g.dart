@@ -18,10 +18,9 @@ class _$ErrorModelSerializer implements StructuredSerializer<ErrorModel> {
   Iterable<Object?> serialize(Serializers serializers, ErrorModel object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'errors',
-      serializers.serialize(object.errors,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(String)])),
+      'error',
+      serializers.serialize(object.error,
+          specifiedType: const FullType(String)),
     ];
 
     return result;
@@ -38,11 +37,9 @@ class _$ErrorModelSerializer implements StructuredSerializer<ErrorModel> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'errors':
-          result.errors.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(String)]))!
-              as BuiltList<Object?>);
+        case 'error':
+          result.error = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -53,13 +50,13 @@ class _$ErrorModelSerializer implements StructuredSerializer<ErrorModel> {
 
 class _$ErrorModel extends ErrorModel {
   @override
-  final BuiltList<String> errors;
+  final String error;
 
   factory _$ErrorModel([void Function(ErrorModelBuilder)? updates]) =>
       (new ErrorModelBuilder()..update(updates))._build();
 
-  _$ErrorModel._({required this.errors}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(errors, r'ErrorModel', 'errors');
+  _$ErrorModel._({required this.error}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(error, r'ErrorModel', 'error');
   }
 
   @override
@@ -72,20 +69,20 @@ class _$ErrorModel extends ErrorModel {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is ErrorModel && errors == other.errors;
+    return other is ErrorModel && error == other.error;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, errors.hashCode);
+    _$hash = $jc(_$hash, error.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ErrorModel')..add('errors', errors))
+    return (newBuiltValueToStringHelper(r'ErrorModel')..add('error', error))
         .toString();
   }
 }
@@ -93,17 +90,16 @@ class _$ErrorModel extends ErrorModel {
 class ErrorModelBuilder implements Builder<ErrorModel, ErrorModelBuilder> {
   _$ErrorModel? _$v;
 
-  ListBuilder<String>? _errors;
-  ListBuilder<String> get errors =>
-      _$this._errors ??= new ListBuilder<String>();
-  set errors(ListBuilder<String>? errors) => _$this._errors = errors;
+  String? _error;
+  String? get error => _$this._error;
+  set error(String? error) => _$this._error = error;
 
   ErrorModelBuilder();
 
   ErrorModelBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _errors = $v.errors.toBuilder();
+      _error = $v.error;
       _$v = null;
     }
     return this;
@@ -124,23 +120,11 @@ class ErrorModelBuilder implements Builder<ErrorModel, ErrorModelBuilder> {
   ErrorModel build() => _build();
 
   _$ErrorModel _build() {
-    _$ErrorModel _$result;
-    try {
-      _$result = _$v ??
-          new _$ErrorModel._(
-            errors: errors.build(),
-          );
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'errors';
-        errors.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'ErrorModel', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ??
+        new _$ErrorModel._(
+          error: BuiltValueNullFieldError.checkNotNull(
+              error, r'ErrorModel', 'error'),
+        );
     replace(_$result);
     return _$result;
   }

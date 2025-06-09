@@ -9,6 +9,8 @@ import 'package:ibuclubs_mobile/auth/token/data/dto/refresh_token_dto.dart';
 import 'package:ibuclubs_mobile/core/data/models/error_model.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/data/club_details_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/club_dto.dart';
+import 'package:ibuclubs_mobile/features/clubs/data/dto/create_club_dto.dart';
+import 'package:ibuclubs_mobile/features/clubs/data/dto/membership_dto.dart';
 import 'package:injectable/injectable.dart';
 
 part 'serializers.g.dart';
@@ -20,6 +22,8 @@ part 'serializers.g.dart';
   RefreshTokenDto,
   ClubDto,
   ClubDetailsDto,
+  CreateClubDto,
+  MembershipDto,
 ])
 final Serializers serializers = _$serializers;
 

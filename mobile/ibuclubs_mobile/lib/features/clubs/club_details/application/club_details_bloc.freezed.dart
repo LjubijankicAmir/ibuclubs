@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ClubDetailsState {
   RequestState<ClubDetails> get requestState =>
       throw _privateConstructorUsedError;
+  RequestState<Unit> get membershipState => throw _privateConstructorUsedError;
 
   /// Create a copy of ClubDetailsState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,9 +33,12 @@ abstract class $ClubDetailsStateCopyWith<$Res> {
           ClubDetailsState value, $Res Function(ClubDetailsState) then) =
       _$ClubDetailsStateCopyWithImpl<$Res, ClubDetailsState>;
   @useResult
-  $Res call({RequestState<ClubDetails> requestState});
+  $Res call(
+      {RequestState<ClubDetails> requestState,
+      RequestState<Unit> membershipState});
 
   $RequestStateCopyWith<ClubDetails, $Res> get requestState;
+  $RequestStateCopyWith<Unit, $Res> get membershipState;
 }
 
 /// @nodoc
@@ -53,12 +57,17 @@ class _$ClubDetailsStateCopyWithImpl<$Res, $Val extends ClubDetailsState>
   @override
   $Res call({
     Object? requestState = null,
+    Object? membershipState = null,
   }) {
     return _then(_value.copyWith(
       requestState: null == requestState
           ? _value.requestState
           : requestState // ignore: cast_nullable_to_non_nullable
               as RequestState<ClubDetails>,
+      membershipState: null == membershipState
+          ? _value.membershipState
+          : membershipState // ignore: cast_nullable_to_non_nullable
+              as RequestState<Unit>,
     ) as $Val);
   }
 
@@ -72,6 +81,16 @@ class _$ClubDetailsStateCopyWithImpl<$Res, $Val extends ClubDetailsState>
       return _then(_value.copyWith(requestState: value) as $Val);
     });
   }
+
+  /// Create a copy of ClubDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RequestStateCopyWith<Unit, $Res> get membershipState {
+    return $RequestStateCopyWith<Unit, $Res>(_value.membershipState, (value) {
+      return _then(_value.copyWith(membershipState: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -82,10 +101,14 @@ abstract class _$$ClubDetailsStateImplCopyWith<$Res>
       __$$ClubDetailsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({RequestState<ClubDetails> requestState});
+  $Res call(
+      {RequestState<ClubDetails> requestState,
+      RequestState<Unit> membershipState});
 
   @override
   $RequestStateCopyWith<ClubDetails, $Res> get requestState;
+  @override
+  $RequestStateCopyWith<Unit, $Res> get membershipState;
 }
 
 /// @nodoc
@@ -102,12 +125,17 @@ class __$$ClubDetailsStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? requestState = null,
+    Object? membershipState = null,
   }) {
     return _then(_$ClubDetailsStateImpl(
       requestState: null == requestState
           ? _value.requestState
           : requestState // ignore: cast_nullable_to_non_nullable
               as RequestState<ClubDetails>,
+      membershipState: null == membershipState
+          ? _value.membershipState
+          : membershipState // ignore: cast_nullable_to_non_nullable
+              as RequestState<Unit>,
     ));
   }
 }
@@ -115,14 +143,17 @@ class __$$ClubDetailsStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ClubDetailsStateImpl implements _ClubDetailsState {
-  _$ClubDetailsStateImpl({required this.requestState});
+  _$ClubDetailsStateImpl(
+      {required this.requestState, required this.membershipState});
 
   @override
   final RequestState<ClubDetails> requestState;
+  @override
+  final RequestState<Unit> membershipState;
 
   @override
   String toString() {
-    return 'ClubDetailsState(requestState: $requestState)';
+    return 'ClubDetailsState(requestState: $requestState, membershipState: $membershipState)';
   }
 
   @override
@@ -131,11 +162,13 @@ class _$ClubDetailsStateImpl implements _ClubDetailsState {
         (other.runtimeType == runtimeType &&
             other is _$ClubDetailsStateImpl &&
             (identical(other.requestState, requestState) ||
-                other.requestState == requestState));
+                other.requestState == requestState) &&
+            (identical(other.membershipState, membershipState) ||
+                other.membershipState == membershipState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, requestState);
+  int get hashCode => Object.hash(runtimeType, requestState, membershipState);
 
   /// Create a copy of ClubDetailsState
   /// with the given fields replaced by the non-null parameter values.
@@ -149,11 +182,14 @@ class _$ClubDetailsStateImpl implements _ClubDetailsState {
 
 abstract class _ClubDetailsState implements ClubDetailsState {
   factory _ClubDetailsState(
-          {required final RequestState<ClubDetails> requestState}) =
+          {required final RequestState<ClubDetails> requestState,
+          required final RequestState<Unit> membershipState}) =
       _$ClubDetailsStateImpl;
 
   @override
   RequestState<ClubDetails> get requestState;
+  @override
+  RequestState<Unit> get membershipState;
 
   /// Create a copy of ClubDetailsState
   /// with the given fields replaced by the non-null parameter values.

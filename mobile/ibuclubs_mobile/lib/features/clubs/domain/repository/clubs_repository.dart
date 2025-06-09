@@ -4,7 +4,9 @@ import 'package:ibuclubs_mobile/core/data/request/failures/extensions/response_r
 import 'package:ibuclubs_mobile/core/data/request/failures/request_failure.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/domain/model/club_details.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/datasources/clubs_remote_datasource.dart';
+import 'package:ibuclubs_mobile/features/clubs/data/dto/create_club_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/domain/model/club.dart';
+import 'package:ibuclubs_mobile/features/clubs/domain/model/membership.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
@@ -13,7 +15,7 @@ class ClubsRepository {
 
   ClubsRepository(this._remoteDatasource);
 
-  Future<Either<RequestFailure, List<Club>>> getMyClubs() async {
+  Future<Either<RequestFailure, List<Membership>>> getMyClubs() async {
     try {
       final response = await _remoteDatasource.getMyClubs();
 
@@ -52,6 +54,60 @@ class ClubsRepository {
       return left(response.toRequestFailure());
     } catch (e) {
       return left(await e.toRequestFailure());
+    }
+  }
+
+  Future<Option<RequestFailure>> enrollToClub(String clubId) async {
+    try {
+      final response = await _remoteDatasource.enrollToClub(clubId);
+
+      if (response.isSuccessful) {
+        return none();
+      }
+
+      return some(response.toRequestFailure());
+    } catch (e) {
+      return some(await e.toRequestFailure());
+    }
+  }
+
+  Future<Option<RequestFailure>> leaveClub(String clubId) async {
+    try {
+      final response = await _remoteDatasource.leaveClub(clubId);
+
+      if (response.isSuccessful) {
+        return none();
+      }
+
+      return some(response.toRequestFailure());
+    } catch (e) {
+      return some(await e.toRequestFailure());
+    }
+  }
+
+  Future<Option<RequestFailure>> createClub(
+    String name,
+    String description,
+    String socialMediaLink,
+  ) async {
+    try {
+      final model = CreateClubDto(
+        (builder) =>
+            builder
+              ..name = name
+              ..description = description
+              ..socialMediaLink = socialMediaLink,
+      );
+
+      final response = await _remoteDatasource.createClub(model);
+
+      if (response.isSuccessful) {
+        return none();
+      }
+
+      return some(response.toRequestFailure());
+    } catch (e) {
+      return some(await e.toRequestFailure());
     }
   }
 }

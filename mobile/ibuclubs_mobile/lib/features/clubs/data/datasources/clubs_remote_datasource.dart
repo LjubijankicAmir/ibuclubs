@@ -1,8 +1,11 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:chopper/chopper.dart';
+import 'package:dartz/dartz.dart';
 import 'package:ibuclubs_mobile/core/data/chopper_clients.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/data/club_details_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/club_dto.dart';
+import 'package:ibuclubs_mobile/features/clubs/data/dto/create_club_dto.dart';
+import 'package:ibuclubs_mobile/features/clubs/data/dto/membership_dto.dart';
 import 'package:injectable/injectable.dart';
 
 part 'clubs_remote_datasource.chopper.dart';
@@ -14,12 +17,21 @@ abstract class ClubsRemoteDatasource extends ChopperService {
   static ClubsRemoteDatasource create(BaseChopperClient client) =>
       _$ClubsRemoteDatasource(client);
 
-  @GET(path: '/getMyClubs')
-  Future<Response<BuiltList<ClubDto>>> getMyClubs();
+  @POST(path: '/createClub')
+  Future<Response<Unit>> createClub(@Body() CreateClubDto clubDto);
 
-  @GET(path: 'getAllClubs')
+  @GET(path: '/getMyClubs')
+  Future<Response<BuiltList<MembershipDto>>> getMyClubs();
+
+  @GET(path: 'getApprovedClubs')
   Future<Response<BuiltList<ClubDto>>> getAllClubs();
 
   @GET(path: '/getClubById/{clubId}')
   Future<Response<ClubDetailsDto>> getClubById(@Path('clubId') String clubId);
+
+  @POST(path: '/enroll/{clubId}')
+  Future<Response> enrollToClub(@Path('clubId') String clubId);
+
+  @POST(path: '/leave/{clubId}')
+  Future<Response> leaveClub(@Path('clubId') String clubId);
 }

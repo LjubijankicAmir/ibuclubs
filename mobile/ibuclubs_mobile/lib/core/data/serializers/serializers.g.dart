@@ -9,13 +9,12 @@ part of 'serializers.dart';
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ClubDetailsDto.serializer)
       ..add(ClubDto.serializer)
+      ..add(CreateClubDto.serializer)
       ..add(ErrorModel.serializer)
       ..add(JwtDto.serializer)
+      ..add(MembershipDto.serializer)
       ..add(RefreshTokenDto.serializer)
-      ..add(SignInDto.serializer)
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>()))
+      ..add(SignInDto.serializer))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint
