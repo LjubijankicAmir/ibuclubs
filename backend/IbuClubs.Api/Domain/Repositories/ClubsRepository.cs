@@ -11,6 +11,13 @@ public class ClubRepository(IbuClubsDbContext context) : IRepository<Club>
     {
         return await context.Clubs.ToListAsync();
     }
+    
+    public async Task<IEnumerable<Club>> GetApprovedAsync()
+    {
+        return await context.Clubs
+            .Where(c => c.Status == ClubStatus.Approved)
+            .ToListAsync();
+    }
 
     public async Task<Club> GetByIdAsync(string id)
     {
@@ -26,6 +33,10 @@ public class ClubRepository(IbuClubsDbContext context) : IRepository<Club>
         if (club == null)
             throw new KeyNotFoundException($"Club with id {clubId} not found");
         
+        var currentCount = await context.Memberships.CountAsync(s => s.StudentId == studentGuid);
+        if (currentCount == 3)
+            throw new InvalidOperationException("You can not be enrolled in more than 3 clubs");
+        
         
         var alreadyEnrolled = await context.Memberships.AnyAsync(m => m.StudentId == studentGuid && m.ClubId == clubGuid);
         if (alreadyEnrolled) throw new InvalidOperationException("Already enrolled");
@@ -40,19 +51,40 @@ public class ClubRepository(IbuClubsDbContext context) : IRepository<Club>
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Club>> GetByUserIdAsync(string userId)
+    public async Task LeaveClubAsync(string userId, string clubId)
+    {
+        var studentGuid = Guid.Parse(userId);
+        var club = await context.Clubs.FindAsync(Guid.Parse(clubId));
+        
+        if (club == null) throw new KeyNotFoundException($"Club with id {clubId} not found");
+        
+        var membership = await context.Memberships.FindAsync(studentGuid, club.ClubId);
+        
+        if (membership == null) throw new KeyNotFoundException($"Membership with id {clubId} not found");
+        
+        context.Memberships.Remove(membership);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<Membership>> GetByUserIdAsync(string userId)
     {
         var userGuid = Guid.Parse(userId);
         return await context.Memberships
             .Where(m => m.StudentId == userGuid)
-            .Include(m => m.Club)
-            .Select(m => m.Club)
+            .Include(m => m.Club) 
             .ToListAsync();
     }
 
     public async Task AddAsync(Club club)
     {
         await context.Clubs.AddAsync(club);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task AddWithOwnerAsync(Club club, Membership membership)
+    {
+        await context.Clubs.AddAsync(club);
+        await context.Memberships.AddAsync(membership);
         await context.SaveChangesAsync();
     }
 

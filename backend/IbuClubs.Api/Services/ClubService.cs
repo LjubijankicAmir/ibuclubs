@@ -26,6 +26,12 @@ public class ClubService : IClubService
         var clubs = await _repository.GetAllAsync();
         return clubs;
     }
+    
+    public async Task<IEnumerable<Club>> GetApprovedClubsAsync()
+    {
+        var clubs = await _repository.GetApprovedAsync();
+        return clubs;
+    }
 
     public async Task<Club> GetClubByIdAsync(string id)
     {
@@ -38,7 +44,12 @@ public class ClubService : IClubService
         await _repository.EnrollUserAsync(userId, clubId);        
     }
 
-    public async Task<IEnumerable<Club>> GetByUserIdAsync(string userId)
+    public async Task LeaveClubAsync(string userId, string clubId)
+    {
+        await _repository.LeaveClubAsync(userId, clubId);
+    }
+
+    public async Task<IEnumerable<Membership>> GetByUserIdAsync(string userId)
     {
         var clubs = await _repository.GetByUserIdAsync(userId);
         return clubs;
@@ -49,18 +60,25 @@ public class ClubService : IClubService
         var club = _mapper.Map<CreateClubDto, Club>(clubDto);
         var studentGuid = Guid.Parse(userId);
         
-        var student = _studentRepository.GetByIdAsync(userId);
+        var student = await _studentRepository.GetByIdAsync(userId);
         if (student == null)
             throw new KeyNotFoundException($"User {userId} not found");
         
         club.ClubId = Guid.NewGuid();
-        await _repository.AddAsync(club);
-        await _repositoryMembership.AddAsync(new Membership
+        await _repository.AddWithOwnerAsync(club, new Membership
         {
             StudentId = studentGuid,
             ClubId = club.ClubId,
             Role = "Owner"
         });
+        
+    }
+    
+    public async Task CreateClubAsAdminAsync(CreateClubDto clubDto)
+    {
+        var club = _mapper.Map<CreateClubDto, Club>(clubDto);
+        club.ClubId = Guid.NewGuid();
+        await _repository.AddAsync(club);
     }
 
     public async Task ReviewClubAsync(string clubId, ClubStatus status)

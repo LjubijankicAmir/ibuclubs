@@ -33,6 +33,23 @@ public class ClubController(IClubService _clubService, IMapper _mapper, Membersh
         }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetApprovedClubs()
+    {
+        try
+        {
+            var clubs = await _clubService.GetApprovedClubsAsync();
+            if (!clubs.Any())
+                return NoContent();
+            
+            return Ok(clubs);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+    
     [HttpGet("{id}")]
     [Authorize]
     public async Task<IActionResult> GetClubById(string id)
@@ -99,8 +116,24 @@ public class ClubController(IClubService _clubService, IMapper _mapper, Membersh
         try
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             await _clubService.CreateClubAsync(clubDto, userId);
+            return Ok(new { message = "Club created successfully!" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> CreateClubAdmin(CreateClubDto clubDto)
+    {
+        try
+        {
+            await _clubService.CreateClubAsAdminAsync(clubDto);
             return Ok(new { message = "Club created successfully!" });
         }
         catch (Exception ex)
@@ -128,7 +161,29 @@ public class ClubController(IClubService _clubService, IMapper _mapper, Membersh
         }
         catch (InvalidOperationException invalidOperationException)
         {
-            return BadRequest(invalidOperationException.Message);
+            return BadRequest(new {error = invalidOperationException.Message});
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
+        }
+    }
+
+    [HttpPost("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Leave(string id)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            await _clubService.LeaveClubAsync(userId, id);
+            return Ok("Left the club successfully!");
+        }
+        catch (KeyNotFoundException keyException)
+        {
+            return NotFound(keyException.Message);
         }
         catch (Exception exception)
         {

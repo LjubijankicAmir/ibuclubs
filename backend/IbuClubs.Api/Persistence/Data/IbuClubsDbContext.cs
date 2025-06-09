@@ -26,14 +26,16 @@ namespace IbuClubs.Api.Persistence.Data
             modelBuilder.Entity<Membership>(entity =>
             {
                 entity.HasKey(m => new { m.StudentId, m.ClubId });
+
                 entity.HasOne(m => m.Student)
-                      .WithMany(s => s.Memberships)
-                      .HasForeignKey(m => m.StudentId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                    .WithMany(s => s.Memberships)
+                    .HasForeignKey(m => m.StudentId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
                 entity.HasOne(m => m.Club)
-                      .WithMany(c => c.Memberships)
-                      .HasForeignKey(m => m.ClubId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                    .WithMany()
+                    .HasForeignKey(m => m.ClubId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<ActivityEnrollment>(entity =>

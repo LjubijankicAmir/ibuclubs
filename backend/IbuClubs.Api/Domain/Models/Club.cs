@@ -12,7 +12,6 @@ namespace IbuClubs.Api.Domain.Models
         
         public ClubStatus Status { get; set; } = ClubStatus.Pending;
 
-        public ICollection<Membership> Memberships { get; set; }
         public ICollection<Activity> Activities { get; set; }
     }
 }
