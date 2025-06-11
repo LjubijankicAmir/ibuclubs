@@ -1374,6 +1374,8 @@ abstract class _SubmitClub implements HomeEvent {
 
 /// @nodoc
 mixin _$HomeState {
+  RequestState<List<Activity>> get activitiesState =>
+      throw _privateConstructorUsedError;
   RequestState<Unit> get requestState => throw _privateConstructorUsedError;
   SubmitClubFormState get form => throw _privateConstructorUsedError;
 
@@ -1389,8 +1391,12 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({RequestState<Unit> requestState, SubmitClubFormState form});
+  $Res call(
+      {RequestState<List<Activity>> activitiesState,
+      RequestState<Unit> requestState,
+      SubmitClubFormState form});
 
+  $RequestStateCopyWith<List<Activity>, $Res> get activitiesState;
   $RequestStateCopyWith<Unit, $Res> get requestState;
   $SubmitClubFormStateCopyWith<$Res> get form;
 }
@@ -1410,10 +1416,15 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? activitiesState = null,
     Object? requestState = null,
     Object? form = null,
   }) {
     return _then(_value.copyWith(
+      activitiesState: null == activitiesState
+          ? _value.activitiesState
+          : activitiesState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<Activity>>,
       requestState: null == requestState
           ? _value.requestState
           : requestState // ignore: cast_nullable_to_non_nullable
@@ -1423,6 +1434,17 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           : form // ignore: cast_nullable_to_non_nullable
               as SubmitClubFormState,
     ) as $Val);
+  }
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RequestStateCopyWith<List<Activity>, $Res> get activitiesState {
+    return $RequestStateCopyWith<List<Activity>, $Res>(_value.activitiesState,
+        (value) {
+      return _then(_value.copyWith(activitiesState: value) as $Val);
+    });
   }
 
   /// Create a copy of HomeState
@@ -1454,8 +1476,13 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({RequestState<Unit> requestState, SubmitClubFormState form});
+  $Res call(
+      {RequestState<List<Activity>> activitiesState,
+      RequestState<Unit> requestState,
+      SubmitClubFormState form});
 
+  @override
+  $RequestStateCopyWith<List<Activity>, $Res> get activitiesState;
   @override
   $RequestStateCopyWith<Unit, $Res> get requestState;
   @override
@@ -1475,10 +1502,15 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? activitiesState = null,
     Object? requestState = null,
     Object? form = null,
   }) {
     return _then(_$HomeStateImpl(
+      activitiesState: null == activitiesState
+          ? _value.activitiesState
+          : activitiesState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<Activity>>,
       requestState: null == requestState
           ? _value.requestState
           : requestState // ignore: cast_nullable_to_non_nullable
@@ -1494,8 +1526,13 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  _$HomeStateImpl({required this.requestState, required this.form});
+  _$HomeStateImpl(
+      {required this.activitiesState,
+      required this.requestState,
+      required this.form});
 
+  @override
+  final RequestState<List<Activity>> activitiesState;
   @override
   final RequestState<Unit> requestState;
   @override
@@ -1503,7 +1540,7 @@ class _$HomeStateImpl implements _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(requestState: $requestState, form: $form)';
+    return 'HomeState(activitiesState: $activitiesState, requestState: $requestState, form: $form)';
   }
 
   @override
@@ -1511,13 +1548,16 @@ class _$HomeStateImpl implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
+            (identical(other.activitiesState, activitiesState) ||
+                other.activitiesState == activitiesState) &&
             (identical(other.requestState, requestState) ||
                 other.requestState == requestState) &&
             (identical(other.form, form) || other.form == form));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, requestState, form);
+  int get hashCode =>
+      Object.hash(runtimeType, activitiesState, requestState, form);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -1530,9 +1570,12 @@ class _$HomeStateImpl implements _HomeState {
 
 abstract class _HomeState implements HomeState {
   factory _HomeState(
-      {required final RequestState<Unit> requestState,
+      {required final RequestState<List<Activity>> activitiesState,
+      required final RequestState<Unit> requestState,
       required final SubmitClubFormState form}) = _$HomeStateImpl;
 
+  @override
+  RequestState<List<Activity>> get activitiesState;
   @override
   RequestState<Unit> get requestState;
   @override

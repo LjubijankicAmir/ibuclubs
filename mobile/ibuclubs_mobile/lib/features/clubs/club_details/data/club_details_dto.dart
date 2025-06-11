@@ -10,7 +10,7 @@ abstract class ClubDetailsDto
   String get id;
   String get name;
   String get description;
-  String get socialMediaLink;
+  String? get socialMediaLink;
   int get membershipCount;
   bool get isEnrolled;
 

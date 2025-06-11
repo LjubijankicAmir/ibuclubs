@@ -9,7 +9,7 @@ abstract class ClubDto implements Built<ClubDto, ClubDtoBuilder> {
   String get id;
   String get name;
   String get description;
-  String get socialMediaLink;
+  String? get socialMediaLink;
 
   factory ClubDto([void Function(ClubDtoBuilder) updates]) = _$ClubDto;
 

@@ -27,9 +27,6 @@ class _$ClubDetailsDtoSerializer
       'description',
       serializers.serialize(object.description,
           specifiedType: const FullType(String)),
-      'socialMediaLink',
-      serializers.serialize(object.socialMediaLink,
-          specifiedType: const FullType(String)),
       'membershipCount',
       serializers.serialize(object.membershipCount,
           specifiedType: const FullType(int)),
@@ -37,7 +34,14 @@ class _$ClubDetailsDtoSerializer
       serializers.serialize(object.isEnrolled,
           specifiedType: const FullType(bool)),
     ];
-
+    Object? value;
+    value = object.socialMediaLink;
+    if (value != null) {
+      result
+        ..add('socialMediaLink')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -67,7 +71,7 @@ class _$ClubDetailsDtoSerializer
           break;
         case 'socialMediaLink':
           result.socialMediaLink = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'membershipCount':
           result.membershipCount = serializers.deserialize(value,
@@ -92,7 +96,7 @@ class _$ClubDetailsDto extends ClubDetailsDto {
   @override
   final String description;
   @override
-  final String socialMediaLink;
+  final String? socialMediaLink;
   @override
   final int membershipCount;
   @override
@@ -105,7 +109,7 @@ class _$ClubDetailsDto extends ClubDetailsDto {
       {required this.id,
       required this.name,
       required this.description,
-      required this.socialMediaLink,
+      this.socialMediaLink,
       required this.membershipCount,
       required this.isEnrolled})
       : super._() {
@@ -113,8 +117,6 @@ class _$ClubDetailsDto extends ClubDetailsDto {
     BuiltValueNullFieldError.checkNotNull(name, r'ClubDetailsDto', 'name');
     BuiltValueNullFieldError.checkNotNull(
         description, r'ClubDetailsDto', 'description');
-    BuiltValueNullFieldError.checkNotNull(
-        socialMediaLink, r'ClubDetailsDto', 'socialMediaLink');
     BuiltValueNullFieldError.checkNotNull(
         membershipCount, r'ClubDetailsDto', 'membershipCount');
     BuiltValueNullFieldError.checkNotNull(
@@ -236,8 +238,7 @@ class ClubDetailsDtoBuilder
               name, r'ClubDetailsDto', 'name'),
           description: BuiltValueNullFieldError.checkNotNull(
               description, r'ClubDetailsDto', 'description'),
-          socialMediaLink: BuiltValueNullFieldError.checkNotNull(
-              socialMediaLink, r'ClubDetailsDto', 'socialMediaLink'),
+          socialMediaLink: socialMediaLink,
           membershipCount: BuiltValueNullFieldError.checkNotNull(
               membershipCount, r'ClubDetailsDto', 'membershipCount'),
           isEnrolled: BuiltValueNullFieldError.checkNotNull(

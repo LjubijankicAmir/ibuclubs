@@ -1,7 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:ibuclubs_mobile/core/presentation/routes.gr.dart';
 import 'package:ibuclubs_mobile/core/presentation/style.dart';
 import 'package:ibuclubs_mobile/features/clubs/domain/model/club.dart';
-import 'package:ibuclubs_mobile/features/clubs/club_details/presentation/club_details_page.dart';
 
 class ClubCard extends StatelessWidget {
   final Club club;
@@ -17,11 +18,7 @@ class ClubCard extends StatelessWidget {
         side: BorderSide(color: Colors.grey.shade200),
       ),
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => ClubDetailsPage(id: club.id)),
-          );
-        },
+        onTap: () => AutoRouter.of(context).push(ClubDetailsRoute(id: club.id)),
         borderRadius: kDefaultBorderRadius,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

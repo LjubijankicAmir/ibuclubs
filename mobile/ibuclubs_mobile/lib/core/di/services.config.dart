@@ -36,6 +36,12 @@ import 'package:ibuclubs_mobile/core/data/serializers/request_to_json.dart'
 import 'package:ibuclubs_mobile/core/data/serializers/serializers.dart'
     as _i479;
 import 'package:ibuclubs_mobile/core/presentation/routes.dart' as _i241;
+import 'package:ibuclubs_mobile/features/activities/application/activities_bloc.dart'
+    as _i460;
+import 'package:ibuclubs_mobile/features/activities/data/datasources/activity_remote_datasource.dart'
+    as _i249;
+import 'package:ibuclubs_mobile/features/activities/domain/repository/activity_repository.dart'
+    as _i442;
 import 'package:ibuclubs_mobile/features/clubs/application/clubs_bloc.dart'
     as _i776;
 import 'package:ibuclubs_mobile/features/clubs/club_details/application/club_details_bloc.dart'
@@ -124,14 +130,24 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i1043.ClubsRemoteDatasource>(() =>
         _i1043.ClubsRemoteDatasource.create(gh<_i687.BaseChopperClient>()));
+    gh.lazySingleton<_i249.ActivityRemoteDatasource>(() =>
+        _i249.ActivityRemoteDatasource.create(gh<_i687.BaseChopperClient>()));
     gh.lazySingleton<_i271.ClubsRepository>(
         () => _i271.ClubsRepository(gh<_i1043.ClubsRemoteDatasource>()));
-    gh.factory<_i279.HomeBloc>(
-        () => _i279.HomeBloc(gh<_i271.ClubsRepository>()));
+    gh.lazySingleton<_i442.ActivityRepository>(
+        () => _i442.ActivityRepository(gh<_i249.ActivityRemoteDatasource>()));
+    gh.factory<_i279.HomeBloc>(() => _i279.HomeBloc(
+          gh<_i271.ClubsRepository>(),
+          gh<_i442.ActivityRepository>(),
+        ));
     gh.factory<_i196.ClubDetailsBloc>(
         () => _i196.ClubDetailsBloc(gh<_i271.ClubsRepository>()));
     gh.factory<_i776.ClubsBloc>(
         () => _i776.ClubsBloc(gh<_i271.ClubsRepository>()));
+    gh.factory<_i460.ActivitiesBloc>(() => _i460.ActivitiesBloc(
+          gh<_i442.ActivityRepository>(),
+          gh<_i271.ClubsRepository>(),
+        ));
     return this;
   }
 }

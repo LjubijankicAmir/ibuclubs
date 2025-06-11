@@ -25,11 +25,15 @@ class _$ClubDtoSerializer implements StructuredSerializer<ClubDto> {
       'description',
       serializers.serialize(object.description,
           specifiedType: const FullType(String)),
-      'socialMediaLink',
-      serializers.serialize(object.socialMediaLink,
-          specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.socialMediaLink;
+    if (value != null) {
+      result
+        ..add('socialMediaLink')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -58,7 +62,7 @@ class _$ClubDtoSerializer implements StructuredSerializer<ClubDto> {
           break;
         case 'socialMediaLink':
           result.socialMediaLink = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -75,7 +79,7 @@ class _$ClubDto extends ClubDto {
   @override
   final String description;
   @override
-  final String socialMediaLink;
+  final String? socialMediaLink;
 
   factory _$ClubDto([void Function(ClubDtoBuilder)? updates]) =>
       (new ClubDtoBuilder()..update(updates))._build();
@@ -84,14 +88,12 @@ class _$ClubDto extends ClubDto {
       {required this.id,
       required this.name,
       required this.description,
-      required this.socialMediaLink})
+      this.socialMediaLink})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'ClubDto', 'id');
     BuiltValueNullFieldError.checkNotNull(name, r'ClubDto', 'name');
     BuiltValueNullFieldError.checkNotNull(
         description, r'ClubDto', 'description');
-    BuiltValueNullFieldError.checkNotNull(
-        socialMediaLink, r'ClubDto', 'socialMediaLink');
   }
 
   @override
@@ -188,8 +190,7 @@ class ClubDtoBuilder implements Builder<ClubDto, ClubDtoBuilder> {
           name: BuiltValueNullFieldError.checkNotNull(name, r'ClubDto', 'name'),
           description: BuiltValueNullFieldError.checkNotNull(
               description, r'ClubDto', 'description'),
-          socialMediaLink: BuiltValueNullFieldError.checkNotNull(
-              socialMediaLink, r'ClubDto', 'socialMediaLink'),
+          socialMediaLink: socialMediaLink,
         );
     replace(_$result);
     return _$result;

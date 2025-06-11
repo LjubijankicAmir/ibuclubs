@@ -16,7 +16,7 @@ class SignOutHandler {
   ) async {
     eventBus.on<SignOutEvent>().listen((signOutEvent) async {
       jwtRepository.delete();
-      appRouter.replace(const SignInRoute());
+      appRouter.replaceAll([const SignInRoute()]);
     });
     return SignOutHandler();
   }

@@ -2,7 +2,7 @@ class Club {
   final String id;
   final String name;
   final String description;
-  final String socialMediaLink;
+  final String? socialMediaLink;
 
   Club({
     required this.id,

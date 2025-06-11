@@ -1,9 +1,10 @@
-import 'package:chopper/chopper.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ibuclubs_mobile/core/data/request/request_state.dart';
 import 'package:ibuclubs_mobile/core/presentation/form/value_form_field.dart';
+import 'package:ibuclubs_mobile/features/activities/domain/model/activity.dart';
+import 'package:ibuclubs_mobile/features/activities/domain/repository/activity_repository.dart';
 import 'package:ibuclubs_mobile/features/clubs/domain/repository/clubs_repository.dart';
 import 'package:ibuclubs_mobile/features/home/application/form/submit_club_form_state.dart';
 import 'package:ibuclubs_mobile/features/home/domain/description.dart';
@@ -18,7 +19,9 @@ part 'home_state.dart';
 @injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ClubsRepository _clubsRepository;
-  HomeBloc(this._clubsRepository) : super(HomeState.initial()) {
+  final ActivityRepository _activityRepository;
+  HomeBloc(this._clubsRepository, this._activityRepository)
+    : super(HomeState.initial()) {
     on<_Initialize>(_onInitialize);
     on<_NameChanged>(_onNameChanged);
     on<_NameLeft>(_onNameLeft);
@@ -29,10 +32,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_SubmitClub>(_onSubmitClub);
   }
 
-  Future<void> _onInitialize(
-    _Initialize event,
-    Emitter<HomeState> emit,
-  ) async {}
+  Future<void> _onInitialize(_Initialize event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(activitiesState: RequestState.processing()));
+
+    final result = await _activityRepository.getUpcomingActivities();
+
+    emit(
+      state.copyWith(
+        activitiesState: result.fold(
+          (failure) => RequestState.failed(failure),
+          (success) => RequestState.success(success),
+        ),
+      ),
+    );
+  }
 
   Future<void> _onNameChanged(
     _NameChanged event,

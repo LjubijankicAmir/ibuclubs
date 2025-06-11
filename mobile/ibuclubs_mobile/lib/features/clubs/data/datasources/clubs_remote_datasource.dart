@@ -18,13 +18,16 @@ abstract class ClubsRemoteDatasource extends ChopperService {
       _$ClubsRemoteDatasource(client);
 
   @POST(path: '/createClub')
-  Future<Response<Unit>> createClub(@Body() CreateClubDto clubDto);
+  Future<Response> createClub(@Body() CreateClubDto clubDto);
 
   @GET(path: '/getMyClubs')
   Future<Response<BuiltList<MembershipDto>>> getMyClubs();
 
   @GET(path: 'getApprovedClubs')
   Future<Response<BuiltList<ClubDto>>> getAllClubs();
+
+  @GET(path: '/getOwnedClub')
+  Future<Response<ClubDto?>> getOwnedClub();
 
   @GET(path: '/getClubById/{clubId}')
   Future<Response<ClubDetailsDto>> getClubById(@Path('clubId') String clubId);

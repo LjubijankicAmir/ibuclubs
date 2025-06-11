@@ -2,7 +2,7 @@ class ClubDetails {
   final String id;
   final String name;
   final String description;
-  final String socialMediaLink;
+  final String? socialMediaLink;
   final int membershipCount;
   final bool isEnrolled;
 

@@ -18,7 +18,7 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
   final Type definitionType = ClubsRemoteDatasource;
 
   @override
-  Future<Response<Unit>> createClub(CreateClubDto clubDto) {
+  Future<Response<dynamic>> createClub(CreateClubDto clubDto) {
     final Uri $url = Uri.parse('/club/createClub');
     final $body = clubDto;
     final Request $request = Request(
@@ -27,7 +27,7 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
       client.baseUrl,
       body: $body,
     );
-    return client.send<Unit, Unit>($request);
+    return client.send<dynamic, dynamic>($request);
   }
 
   @override
@@ -50,6 +50,17 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
       client.baseUrl,
     );
     return client.send<BuiltList<ClubDto>, ClubDto>($request);
+  }
+
+  @override
+  Future<Response<ClubDto>> getOwnedClub() {
+    final Uri $url = Uri.parse('/club/getOwnedClub');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<ClubDto, ClubDto>($request);
   }
 
   @override

@@ -43,6 +43,20 @@ class ClubsRepository {
     }
   }
 
+  Future<Either<RequestFailure, Club?>> getOwnedClub() async {
+    try {
+      final response = await _remoteDatasource.getOwnedClub();
+
+      if (response.isSuccessful) {
+        return right(response.body!.toDomain());
+      }
+
+      return left(response.toRequestFailure());
+    } catch (e) {
+      return left(await e.toRequestFailure());
+    }
+  }
+
   Future<Either<RequestFailure, ClubDetails>> getClubById(String clubId) async {
     try {
       final response = await _remoteDatasource.getClubById(clubId);
