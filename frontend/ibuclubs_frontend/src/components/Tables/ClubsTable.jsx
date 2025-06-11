@@ -1,35 +1,39 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PeopleIcon from '@mui/icons-material/People';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditClubModal from '../Modals/EditModals/EditClubModal';
 import './Table.css';
 
-const ClubsTable = ({ clubs, onUpdateClub, onDeleteClub, onReviewClub }) => {
+const statusOrder = { Pending: 0, Approved: 1, Rejected: 2 };
+
+const ClubsTable = ({
+  clubs,
+  onUpdateClub,
+  onDeleteClub,
+  onReviewClub,
+  onListMembers,
+}) => {
   const [selectedClub, setSelectedClub] = React.useState(null);
   const [openEditModal, setOpenEditModal] = React.useState(false);
-
-  const statusOrder = { Pending: 0, Approved: 1, Rejected: 2 };
-
 
   const handleEditClick = (club) => {
     setSelectedClub(club);
     setOpenEditModal(true);
   };
 
-  const handleReview = (clubId, status) => {
-    onReviewClub(clubId, status);
-  };
-    
-
   const handleDeleteClick = (club) => {
     if (onDeleteClub) {
       onDeleteClub(club);
     }
+  };
+
+  const handleListClick = (club) => {
+    onListMembers(club);
   };
 
   const handleCloseModal = () => {
@@ -62,17 +66,10 @@ const ClubsTable = ({ clubs, onUpdateClub, onDeleteClub, onReviewClub }) => {
         }
         return (
           <>
-            <Button
-              size="small"
-              onClick={() => handleReview(id, 1)}
-            >
+            <Button size="small" onClick={() => onReviewClub(id, 1)}>
               Approve
             </Button>
-            <Button
-              size="small"
-              color="error"
-              onClick={() => handleReview(id, 2)}
-            >
+            <Button size="small" color="error" onClick={() => onReviewClub(id, 2)}>
               Reject
             </Button>
           </>
@@ -84,25 +81,31 @@ const ClubsTable = ({ clubs, onUpdateClub, onDeleteClub, onReviewClub }) => {
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 150,
+      width: 180,
       sortable: false,
       filterable: false,
-      renderCell: (params) => (
-        <>
-          <IconButton onClick={() => handleEditClick(params.row)} sx={{ color: '#2d5f8b' }}>
-            <EditIcon />
-          </IconButton>
-          <IconButton onClick={() => handleDeleteClick(params.row)} sx={{ color: '#f44336' }}>
-            <DeleteIcon />
-          </IconButton>
-        </>
-      ),
+      renderCell: (params) => {
+        const club = params.row;
+        return (
+          <>
+            <IconButton onClick={() => handleEditClick(club)} sx={{ color: '#2d5f8b' }}>
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={() => handleDeleteClick(club)} sx={{ color: '#f44336' }}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => handleListClick(club)} sx={{ color: '#4176a4' }}>
+              <PeopleIcon />
+            </IconButton>
+          </>
+        );
+      },
     },
   ];
 
-  const sortedRows = [...clubs]
-    .sort((a,b) => statusOrder[a.status] - statusOrder[b.status])
-    .map(club => ({ id: club.clubId, ...club }));
+  const sortedRows = clubs
+    .sort((a, b) => a.status - b.status)
+    .map((club) => ({ id: club.clubId, ...club }));
 
   return (
     <div className="data-grid">

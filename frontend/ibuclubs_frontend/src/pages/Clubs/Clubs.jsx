@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ClubsApi } from '../../api/apiService';
 import ClubsTable from '../../components/Tables/ClubsTable';
+import MembersModal from '../../components/Modals/ViewModals/MembersModal';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import CreateClubModal from '../../components/Modals/CreateModals/CreateClubModal';
@@ -11,14 +12,19 @@ const Clubs = () => {
   const [error, setError] = useState('');
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
+  const [membersModalOpen, setMembersModalOpen] = useState(false);
+  const [selectedClub, setSelectedClub] = useState(null);
+
   const fetchClubs = () => {
+    setLoading(true);
     ClubsApi.getClubs()
       .then((response) => {
         setClubs(Array.isArray(response.data) ? response.data : []);
-        setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError('Error loading clubs');
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
@@ -26,6 +32,16 @@ const Clubs = () => {
   useEffect(() => {
     fetchClubs();
   }, []);
+
+  const handleCreateClub = (clubData) => {
+    ClubsApi.createClub(clubData)
+      .then(() => {
+        fetchClubs();
+      })
+      .catch(() => {
+        alert('Error creating club');
+      });
+  };
 
   const handleUpdateClub = (updatedClub) => {
     ClubsApi.updateClub(updatedClub)
@@ -49,16 +65,6 @@ const Clubs = () => {
     }
   };
 
-  const handleCreateClub = (clubData) => {
-    ClubsApi.createClub(clubData)
-      .then(() => {
-        fetchClubs();
-      })
-      .catch(() => {
-        alert('Error creating club');
-      });
-  }
-
   const handleReviewClub = (clubId, status) => {
     ClubsApi.reviewClub(clubId, status)
       .then(() => {
@@ -67,7 +73,17 @@ const Clubs = () => {
       .catch(() => {
         alert('Error reviewing club');
       });
-    }
+  };
+
+  const handleListMembers = (club) => {
+    setSelectedClub(club);
+    setMembersModalOpen(true);
+  };
+
+  const handleCloseMembers = () => {
+    setMembersModalOpen(false);
+    setSelectedClub(null);
+  };
 
   if (error) return <div>{error}</div>;
 
@@ -87,27 +103,38 @@ const Clubs = () => {
         </div>
       ) : (
         <>
-        <ClubsTable
-          clubs={clubs}
-          onUpdateClub={handleUpdateClub}
-          onDeleteClub={handleDeleteClub}
-          onReviewClub={handleReviewClub}
-        />
-        <div style={{ marginTop: '20px' }}>
-            <Button 
-            variant="contained" 
-            sx={{ backgroundColor: '#4176a4'}} 
-            onClick={() => setCreateModalOpen(true)}>
+          <ClubsTable
+            clubs={clubs}
+            onUpdateClub={handleUpdateClub}
+            onDeleteClub={handleDeleteClub}
+            onReviewClub={handleReviewClub}
+            onListMembers={handleListMembers}
+          />
+          <div style={{ marginTop: '20px' }}>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: '#4176a4' }}
+              onClick={() => setCreateModalOpen(true)}
+            >
               Create New Club
             </Button>
           </div>
         </>
       )}
+
       <CreateClubModal
         open={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
         onSubmit={handleCreateClub}
+      />
+
+      {selectedClub && (
+        <MembersModal
+          open={membersModalOpen}
+          onClose={handleCloseMembers}
+          club={selectedClub}
         />
+      )}
     </div>
   );
 };

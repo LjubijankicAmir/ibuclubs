@@ -32,7 +32,8 @@ export const StudentsApi = {
 
 export const ClubsApi = {
     getClubs: async () => ApiClient.get('club/getallclubs'),
-    createClub: async (data) => ApiClient.post('club/createclub', data),
+    getMembers: async (id) => ApiClient.get(`club/getmembers/${id}`),
+    createClub: async (data) => ApiClient.post('club/createclubadmin', data),
     updateClub: async (data) => ApiClient.put(`club/updateclub/${data.id}`, data),
     deleteClub: async (id) => ApiClient.delete(`club/deleteclub/${id}`),
     getClubById: async (id) => ApiClient.get(`club/getclubbyid/${id}`),
