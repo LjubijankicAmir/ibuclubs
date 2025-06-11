@@ -9,7 +9,9 @@ public interface IClubService
     Task<IEnumerable<Club>> GetApprovedClubsAsync();
     Task<Club> GetClubByIdAsync(string id);
     Task EnrollUserAsync(string userId, string clubId);
+    Task<IEnumerable<Student>> GetEnrolledStudentsAsync(string clubId);
     Task LeaveClubAsync(string userId, string clubId);
+    Task<Club?> GetOwnedClubAsync(string userId);
     Task<IEnumerable<Membership>> GetByUserIdAsync(string userId);
     Task CreateClubAsync(CreateClubDto clubDto, string userId);
     Task CreateClubAsAdminAsync(CreateClubDto clubDto);

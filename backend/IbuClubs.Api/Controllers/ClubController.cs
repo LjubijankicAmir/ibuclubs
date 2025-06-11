@@ -213,6 +213,43 @@ public class ClubController(IClubService _clubService, IMapper _mapper, Membersh
             return StatusCode(500, $"Internal server error: {exception.Message}");
         }
     }
+
+    [HttpGet("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetMembers(string id)
+    {
+        try
+        {
+            var members = await _clubService.GetEnrolledStudentsAsync(clubId: id);
+            return Ok(members);
+        }
+        catch (KeyNotFoundException keyException)
+        {
+            return NotFound(keyException.Message);
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
+        }
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetOwnedClub()
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var club = await _clubService.GetOwnedClubAsync(userId);
+            return Ok(club);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
     
 
     [HttpPut("{id}")]

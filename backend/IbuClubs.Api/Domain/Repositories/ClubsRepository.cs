@@ -51,6 +51,22 @@ public class ClubRepository(IbuClubsDbContext context) : IRepository<Club>
         await context.SaveChangesAsync();
     }
 
+    public async Task<IEnumerable<Student>> GetEnrolledStudents(string clubId)
+    {
+        var clubGuid = Guid.Parse(clubId);
+        var exists = await context.Clubs
+            .AnyAsync(c => c.ClubId == clubGuid);
+        if (!exists)
+            throw new KeyNotFoundException($"Club with id {clubId} not found");
+
+        var students = await context.Memberships
+            .Where(m => m.ClubId == clubGuid)
+            .Select(m => m.Student)
+            .ToListAsync();
+
+        return students;
+    }
+
     public async Task LeaveClubAsync(string userId, string clubId)
     {
         var studentGuid = Guid.Parse(userId);
@@ -66,12 +82,27 @@ public class ClubRepository(IbuClubsDbContext context) : IRepository<Club>
         await context.SaveChangesAsync();
     }
 
+    public async Task<Club?> GetOwnedClubAsync(string userId)
+    {
+        var studentGuid = Guid.Parse(userId);
+
+        var membership = await context.Memberships
+            .Include(m => m.Club)
+            .FirstOrDefaultAsync(m =>
+                m.StudentId == studentGuid &&
+                m.Role      == "Owner"
+            );
+
+        return membership?.Club;
+    }
+
+
     public async Task<IEnumerable<Membership>> GetByUserIdAsync(string userId)
     {
         var userGuid = Guid.Parse(userId);
         return await context.Memberships
-            .Where(m => m.StudentId == userGuid)
-            .Include(m => m.Club) 
+            .Where(m => m.StudentId == userGuid && m.Club.Status == ClubStatus.Approved)
+            .Include(m => m.Club)
             .ToListAsync();
     }
 

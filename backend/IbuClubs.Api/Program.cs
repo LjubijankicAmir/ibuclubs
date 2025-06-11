@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Domain.Repositories;
@@ -24,7 +25,10 @@ builder.Services.AddCors(options =>
 });
 
 // Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opts =>
+{
+    opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});;
 builder.Services.AddEndpointsApiExplorer();
 
 

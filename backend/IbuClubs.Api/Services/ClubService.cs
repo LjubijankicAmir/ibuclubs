@@ -44,9 +44,19 @@ public class ClubService : IClubService
         await _repository.EnrollUserAsync(userId, clubId);        
     }
 
+    public async Task<IEnumerable<Student>> GetEnrolledStudentsAsync(string clubId)
+    {
+        return await _repository.GetEnrolledStudents(clubId);
+    }
+
     public async Task LeaveClubAsync(string userId, string clubId)
     {
         await _repository.LeaveClubAsync(userId, clubId);
+    }
+
+    public async Task<Club?> GetOwnedClubAsync(string userId)
+    {
+       return await _repository.GetOwnedClubAsync(userId);
     }
 
     public async Task<IEnumerable<Membership>> GetByUserIdAsync(string userId)

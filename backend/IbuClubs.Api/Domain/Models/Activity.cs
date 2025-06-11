@@ -18,5 +18,7 @@ public class Activity
     public int MaxParticipants { get; set; }
 
     public Club Club { get; set; }
+    [NotMapped]
+    public bool isEnrolled { get; set; }
     public ICollection<ActivityEnrollment> ActivityEnrollments { get; set; }
 }

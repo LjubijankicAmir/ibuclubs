@@ -11,5 +11,5 @@ public class CreateClubDto
     public string Description { get; set; }
     
     [StringLength(100)]
-    public string SocialMediaLink { get; set; }
+    public string? SocialMediaLink { get; set; }
 }

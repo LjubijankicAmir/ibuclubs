@@ -6,6 +6,9 @@ namespace IbuClubs.Api.Domain.Interfaces;
 public interface IActivityService
 {
     Task<IEnumerable<Activity>> GetAllActivitiesAsync();
+    Task<IEnumerable<Activity>> GetUpcomingActivitiesAsync(string id);
+    
+    Task EnrollUserAsync(string userId, string activityId);
     Task<Activity> GetActivityByIdAsync(string id);
     Task CreateActivityAsync(CreateActivityDto clubDto);
     Task UpdateActivityAsync(string id, UpdateActivityDto clubDto);

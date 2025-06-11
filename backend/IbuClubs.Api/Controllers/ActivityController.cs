@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using AutoMapper;
 using IbuClubs.Api.Contracts.DTOs.Activity;
 using IbuClubs.Api.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IbuClubs.Api.Controllers;
 
@@ -25,6 +27,51 @@ public class ActivityController(IActivityService _activityService, IMapper _mapp
         catch (Exception ex)
         {
             return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetUpcomingActivities()
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var upcomingActivities = await _activityService.GetUpcomingActivitiesAsync(userId);
+            return Ok(upcomingActivities);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Enroll(string activityId)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            await _activityService.EnrollUserAsync(userId, activityId);
+
+            return Ok("Enrolled successfully");
+        }
+        catch (KeyNotFoundException keyNotFoundException)
+        {
+            return NotFound(keyNotFoundException.Message);
+        }
+        catch (InvalidOperationException invalidOperationException)
+        {
+            return BadRequest(new { error = invalidOperationException.Message });
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
         }
     }
 

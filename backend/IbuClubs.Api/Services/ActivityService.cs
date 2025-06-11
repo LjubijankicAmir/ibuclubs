@@ -23,6 +23,16 @@ public class ActivityService : IActivityService
         return activities;
     }
 
+    public async Task EnrollUserAsync(string userId, string clubId)
+    {
+        await _repository.EnrollUserAsync(userId, clubId);
+    }
+
+    public async Task<IEnumerable<Activity>> GetUpcomingActivitiesAsync(string userId)
+    {
+        return await _repository.GetUpcomingForUserAsync(userId);
+    }
+
     public async Task<Activity> GetActivityByIdAsync(string id)
     {
         var activity = await _repository.GetByIdAsync(id);
