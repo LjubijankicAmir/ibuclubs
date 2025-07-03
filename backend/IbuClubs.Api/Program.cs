@@ -124,13 +124,17 @@ builder.Services.AddScoped<FcmService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.WebHost.UseUrls(Environment.GetEnvironmentVariable("ASPNETCORE_URLS") ?? "http://+:8080");
+Console.WriteLine("✅ Building the app...");
 var app = builder.Build();
+Console.WriteLine("✅ App built.");
 
+Console.WriteLine("⚙️ Initializing Firebase...");
 FirebaseApp.Create(new AppOptions()
 {
     Credential = GoogleCredential.FromFile("firebase-service-account.json")
 });
 
+Console.WriteLine("⚙️ Creating roles and admin...");
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -179,4 +183,5 @@ app.MapControllers();
 
 app.MapGet("/", () => Results.Ok("✅ IbuClubs.Api is up"));
 
+Console.WriteLine("🚀 App is starting on " + Environment.GetEnvironmentVariable("ASPNETCORE_URLS"));
 app.Run();
