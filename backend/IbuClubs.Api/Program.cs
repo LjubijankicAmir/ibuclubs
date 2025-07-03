@@ -129,9 +129,15 @@ var app = builder.Build();
 Console.WriteLine("✅ App built.");
 
 Console.WriteLine("⚙️ Initializing Firebase...");
-FirebaseApp.Create(new AppOptions()
+var firebaseJson = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS_JSON");
+
+if (string.IsNullOrWhiteSpace(firebaseJson))
+    throw new Exception("Firebase credentials not found in environment variables.");
+
+var credential = GoogleCredential.FromJson(firebaseJson);
+FirebaseApp.Create(new AppOptions
 {
-    Credential = GoogleCredential.FromFile("firebase-service-account.json")
+    Credential = credential
 });
 
 Console.WriteLine("⚙️ Creating roles and admin...");
