@@ -14,6 +14,7 @@ namespace IbuClubs.Api.Persistence.Data
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<FcmToken> FcmTokens { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<Activity> Activities { get; set; }

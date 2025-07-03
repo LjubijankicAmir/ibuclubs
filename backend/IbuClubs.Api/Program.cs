@@ -1,5 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Domain.Repositories;
@@ -118,9 +120,15 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
+builder.Services.AddScoped<FcmService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
+
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile("firebase-service-account.json")
+});
 
 using (var scope = app.Services.CreateScope())
 {
