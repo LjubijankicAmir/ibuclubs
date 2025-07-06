@@ -22,5 +22,16 @@ namespace IbuClubs.Api.Controllers
 
             return Ok(new { message = "FCM token registered" });
         }
+        
+        [HttpPost("send-test")]
+        public async Task<IActionResult> SendTestNotification(
+            [FromBody] NotificationTestDto dto,
+            [FromServices] FcmService fcm)
+        {
+            await FcmService.SendNotificationAsync(dto.Token, "Test Title", "This is a test notification from local .NET backend.");
+            return Ok(new { message = "Notification sent" });
+        }
+
+
     }
 }
