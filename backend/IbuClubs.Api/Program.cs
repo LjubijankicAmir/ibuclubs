@@ -174,11 +174,10 @@ using (var scope = app.Services.CreateScope())
 
 app.UseCors("AllowDevClient");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 //app.UseHttpsRedirection();
 app.UseAuthentication();
