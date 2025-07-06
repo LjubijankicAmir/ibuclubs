@@ -60,7 +60,8 @@ namespace IbuClubs.Api.Services
                 {
                     Notification = new AndroidNotification
                     {
-                        ClickAction = "FLUTTER_NOTIFICATION_CLICK"
+                        ClickAction = "FLUTTER_NOTIFICATION_CLICK",
+                        ChannelId = "high_importance_channel"
                     }
                 }
             };
