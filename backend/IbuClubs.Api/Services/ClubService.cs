@@ -48,6 +48,11 @@ public class ClubService : IClubService
     {
         return await _repository.GetEnrolledStudents(clubId);
     }
+    
+    public async Task<IEnumerable<ClubMemberDto>> GetClubMembers(string clubId)
+    {
+        return await _repository.GetClubMembers(clubId);
+    }
 
     public async Task LeaveClubAsync(string userId, string clubId)
     {

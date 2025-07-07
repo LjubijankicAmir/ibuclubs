@@ -217,6 +217,25 @@ public class ClubController(IClubService _clubService,FcmService _fcmService , I
     }
 
     [HttpGet("{id}")]
+    [Authorize]
+    public async Task<IActionResult> GetMembersWithRoles(string id)
+    {
+        try
+        {
+            var members = await _clubService.GetClubMembers(clubId: id);
+            return Ok(members);
+        }
+        catch (KeyNotFoundException keyException)
+        {
+            return NotFound(keyException.Message);
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
+        }
+    }
+    
+    [HttpGet("{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetMembers(string id)
     {

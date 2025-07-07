@@ -10,6 +10,7 @@ public interface IClubService
     Task<Club> GetClubByIdAsync(string id);
     Task EnrollUserAsync(string userId, string clubId);
     Task<IEnumerable<Student>> GetEnrolledStudentsAsync(string clubId);
+    Task<IEnumerable<ClubMemberDto>> GetClubMembers(string clubId);
     Task LeaveClubAsync(string userId, string clubId);
     Task<Club?> GetOwnedClubAsync(string userId);
     Task<IEnumerable<Membership>> GetByUserIdAsync(string userId);

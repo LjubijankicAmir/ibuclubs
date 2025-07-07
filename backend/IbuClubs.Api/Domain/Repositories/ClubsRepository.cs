@@ -1,3 +1,4 @@
+using IbuClubs.Api.Contracts.DTOs.Club;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Persistence.Data;
@@ -66,6 +67,32 @@ public class ClubRepository(IbuClubsDbContext context) : IRepository<Club>
 
         return students;
     }
+    
+    public async Task<IEnumerable<ClubMemberDto>> GetClubMembers(string clubId)
+    {
+        var clubGuid = Guid.Parse(clubId);
+        var exists = await context.Clubs
+            .AnyAsync(c => c.ClubId == clubGuid);
+
+        if (!exists)
+            throw new KeyNotFoundException($"Club with id {clubId} not found");
+
+        var members = await context.Memberships
+            .Where(m => m.ClubId == clubGuid)
+            .Include(m => m.Student)
+            .Select(m => new ClubMemberDto
+            {
+                StudentId = m.StudentId,
+                Name = m.Student.Name,
+                Surname = m.Student.Surname,
+                Email = m.Student.Email,
+                Role = m.Role
+            })
+            .ToListAsync();
+
+        return members;
+    }
+
 
     public async Task LeaveClubAsync(string userId, string clubId)
     {
