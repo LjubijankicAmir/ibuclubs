@@ -1,8 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:chopper/chopper.dart';
-import 'package:dartz/dartz.dart';
 import 'package:ibuclubs_mobile/core/data/chopper_clients.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/data/club_details_dto.dart';
+import 'package:ibuclubs_mobile/features/clubs/club_members/data/dto/club_member_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/club_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/create_club_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/membership_dto.dart';
@@ -28,6 +28,24 @@ abstract class ClubsRemoteDatasource extends ChopperService {
 
   @GET(path: '/getOwnedClub')
   Future<Response<ClubDto?>> getOwnedClub();
+
+  @GET(path: '/getMembersWithRoles/{clubId}')
+  Future<Response<BuiltList<ClubMemberDto>>> getMembersWithRoles(
+    @Path('clubId') String clubId,
+  );
+
+  @PUT(path: '/changeMemberRole/{clubId}/members/{memberId}/role')
+  Future<Response> changeMemberRole(
+    @Path('clubId') String clubId,
+    @Path('memberId') String memberId,
+    @Query('role') String role,
+  );
+
+  @DELETE(path: '/kickMember/{clubId}/members/{memberId}')
+  Future<Response> kickMember(
+    @Path('clubId') String clubId,
+    @Path('memberId') String memberId,
+  );
 
   @GET(path: '/getClubById/{clubId}')
   Future<Response<ClubDetailsDto>> getClubById(@Path('clubId') String clubId);

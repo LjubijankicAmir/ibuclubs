@@ -18,7 +18,10 @@ class ClubCard extends StatelessWidget {
         side: BorderSide(color: Colors.grey.shade200),
       ),
       child: InkWell(
-        onTap: () => AutoRouter.of(context).push(ClubDetailsRoute(id: club.id)),
+        onTap:
+            () => AutoRouter.of(
+              context,
+            ).push(ClubDetailsRoute(id: club.id, role: null)),
         borderRadius: kDefaultBorderRadius,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

@@ -7,6 +7,7 @@ import 'package:ibuclubs_mobile/auth/token/domain/models/jwt.dart';
 import 'package:ibuclubs_mobile/auth/token/domain/repositories/jwt_repository.dart';
 import 'package:ibuclubs_mobile/core/data/request/request_state.dart';
 import 'package:ibuclubs_mobile/core/presentation/form/value_form_field.dart';
+import 'package:ibuclubs_mobile/notifications/domain/repository/notifications_repository.dart';
 import 'package:injectable/injectable.dart';
 
 part 'sign_in_bloc.freezed.dart';
@@ -16,7 +17,9 @@ part 'sign_in_state.dart';
 @injectable
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final JwtRepository _jwtRepository;
-  SignInBloc(this._jwtRepository) : super(SignInState.initial()) {
+  final NotificationsRepository _notificationsRepository;
+  SignInBloc(this._jwtRepository, this._notificationsRepository)
+    : super(SignInState.initial()) {
     on<_EmailChanged>(_onEmailChanged);
     on<_EmailLeft>(_onEmailLeft);
     on<_PasswordChanged>(_onPasswordChanged);
@@ -77,9 +80,13 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     );
 
     result.fold(
-      (failure) =>
-          emit(state.copyWith(requestState: RequestState.failed(failure))),
-      (jwt) => emit(state.copyWith(requestState: RequestState.success(jwt))),
+      (failure) async {
+        emit(state.copyWith(requestState: RequestState.failed(failure)));
+      },
+      (jwt) async {
+        emit(state.copyWith(requestState: RequestState.success(jwt)));
+        await _notificationsRepository.registerToken();
+      },
     );
   }
 }

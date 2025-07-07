@@ -11,9 +11,11 @@ import 'package:ibuclubs_mobile/features/activities/data/dto/activity_dto.dart';
 import 'package:ibuclubs_mobile/features/activities/data/dto/create_activity_dto.dart';
 import 'package:ibuclubs_mobile/features/activities/data/dto/enrollment_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/data/club_details_dto.dart';
+import 'package:ibuclubs_mobile/features/clubs/club_members/data/dto/club_member_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/club_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/create_club_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/membership_dto.dart';
+import 'package:ibuclubs_mobile/notifications/data/dto/fcm_token_dto.dart';
 import 'package:injectable/injectable.dart';
 
 part 'serializers.g.dart';
@@ -30,6 +32,8 @@ part 'serializers.g.dart';
   ActivityDto,
   CreateActivityDto,
   EnrollmentDto,
+  FcmTokenDto,
+  ClubMemberDto,
 ])
 final Serializers serializers = _$serializers;
 

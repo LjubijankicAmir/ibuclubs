@@ -46,12 +46,18 @@ import 'package:ibuclubs_mobile/features/clubs/application/clubs_bloc.dart'
     as _i776;
 import 'package:ibuclubs_mobile/features/clubs/club_details/application/club_details_bloc.dart'
     as _i196;
+import 'package:ibuclubs_mobile/features/clubs/club_members/application/club_members_bloc.dart'
+    as _i266;
 import 'package:ibuclubs_mobile/features/clubs/data/datasources/clubs_remote_datasource.dart'
     as _i1043;
 import 'package:ibuclubs_mobile/features/clubs/domain/repository/clubs_repository.dart'
     as _i271;
 import 'package:ibuclubs_mobile/features/home/application/home_bloc.dart'
     as _i279;
+import 'package:ibuclubs_mobile/notifications/data/datasources/notifications_remote_datasource.dart'
+    as _i245;
+import 'package:ibuclubs_mobile/notifications/domain/repository/notifications_repository.dart'
+    as _i766;
 import 'package:ibuclubs_mobile/splash/application/splash_bloc.dart' as _i729;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -109,10 +115,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i698.JwtInjectionInterceptor(gh<_i538.JwtRepository>()));
     gh.lazySingleton<_i170.JwtAuthenticator>(
         () => _i170.JwtAuthenticator(gh<_i538.JwtRepository>()));
-    gh.factory<_i729.SplashBloc>(
-        () => _i729.SplashBloc(gh<_i538.JwtRepository>()));
-    gh.factory<_i598.SignInBloc>(
-        () => _i598.SignInBloc(gh<_i538.JwtRepository>()));
     await gh.singletonAsync<_i420.SignOutHandler>(
       () => _i420.SignOutHandler.handle(
         gh<_i1017.EventBus>(),
@@ -132,6 +134,20 @@ extension GetItInjectableX on _i174.GetIt {
         _i1043.ClubsRemoteDatasource.create(gh<_i687.BaseChopperClient>()));
     gh.lazySingleton<_i249.ActivityRemoteDatasource>(() =>
         _i249.ActivityRemoteDatasource.create(gh<_i687.BaseChopperClient>()));
+    gh.lazySingleton<_i245.NotificationsRemoteDatasource>(() =>
+        _i245.NotificationsRemoteDatasource.create(
+            gh<_i687.BaseChopperClient>()));
+    gh.lazySingleton<_i766.NotificationsRepository>(() =>
+        _i766.NotificationsRepository(
+            gh<_i245.NotificationsRemoteDatasource>()));
+    gh.factory<_i729.SplashBloc>(() => _i729.SplashBloc(
+          gh<_i538.JwtRepository>(),
+          gh<_i766.NotificationsRepository>(),
+        ));
+    gh.factory<_i598.SignInBloc>(() => _i598.SignInBloc(
+          gh<_i538.JwtRepository>(),
+          gh<_i766.NotificationsRepository>(),
+        ));
     gh.lazySingleton<_i271.ClubsRepository>(
         () => _i271.ClubsRepository(gh<_i1043.ClubsRemoteDatasource>()));
     gh.lazySingleton<_i442.ActivityRepository>(
@@ -140,6 +156,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i271.ClubsRepository>(),
           gh<_i442.ActivityRepository>(),
         ));
+    gh.factory<_i266.ClubMembersBloc>(
+        () => _i266.ClubMembersBloc(gh<_i271.ClubsRepository>()));
     gh.factory<_i196.ClubDetailsBloc>(
         () => _i196.ClubDetailsBloc(gh<_i271.ClubsRepository>()));
     gh.factory<_i776.ClubsBloc>(

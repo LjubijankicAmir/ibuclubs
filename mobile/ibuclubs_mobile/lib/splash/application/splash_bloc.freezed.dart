@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SplashState {
   AuthState get authState => throw _privateConstructorUsedError;
+  RequestState<Unit> get notificationsSetupState =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of SplashState
   /// with the given fields replaced by the non-null parameter values.
@@ -31,9 +33,10 @@ abstract class $SplashStateCopyWith<$Res> {
           SplashState value, $Res Function(SplashState) then) =
       _$SplashStateCopyWithImpl<$Res, SplashState>;
   @useResult
-  $Res call({AuthState authState});
+  $Res call({AuthState authState, RequestState<Unit> notificationsSetupState});
 
   $AuthStateCopyWith<$Res> get authState;
+  $RequestStateCopyWith<Unit, $Res> get notificationsSetupState;
 }
 
 /// @nodoc
@@ -52,12 +55,17 @@ class _$SplashStateCopyWithImpl<$Res, $Val extends SplashState>
   @override
   $Res call({
     Object? authState = null,
+    Object? notificationsSetupState = null,
   }) {
     return _then(_value.copyWith(
       authState: null == authState
           ? _value.authState
           : authState // ignore: cast_nullable_to_non_nullable
               as AuthState,
+      notificationsSetupState: null == notificationsSetupState
+          ? _value.notificationsSetupState
+          : notificationsSetupState // ignore: cast_nullable_to_non_nullable
+              as RequestState<Unit>,
     ) as $Val);
   }
 
@@ -70,6 +78,17 @@ class _$SplashStateCopyWithImpl<$Res, $Val extends SplashState>
       return _then(_value.copyWith(authState: value) as $Val);
     });
   }
+
+  /// Create a copy of SplashState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RequestStateCopyWith<Unit, $Res> get notificationsSetupState {
+    return $RequestStateCopyWith<Unit, $Res>(_value.notificationsSetupState,
+        (value) {
+      return _then(_value.copyWith(notificationsSetupState: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -80,10 +99,12 @@ abstract class _$$SplashStateImplCopyWith<$Res>
       __$$SplashStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AuthState authState});
+  $Res call({AuthState authState, RequestState<Unit> notificationsSetupState});
 
   @override
   $AuthStateCopyWith<$Res> get authState;
+  @override
+  $RequestStateCopyWith<Unit, $Res> get notificationsSetupState;
 }
 
 /// @nodoc
@@ -100,12 +121,17 @@ class __$$SplashStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? authState = null,
+    Object? notificationsSetupState = null,
   }) {
     return _then(_$SplashStateImpl(
       authState: null == authState
           ? _value.authState
           : authState // ignore: cast_nullable_to_non_nullable
               as AuthState,
+      notificationsSetupState: null == notificationsSetupState
+          ? _value.notificationsSetupState
+          : notificationsSetupState // ignore: cast_nullable_to_non_nullable
+              as RequestState<Unit>,
     ));
   }
 }
@@ -113,14 +139,17 @@ class __$$SplashStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SplashStateImpl implements _SplashState {
-  const _$SplashStateImpl({required this.authState});
+  const _$SplashStateImpl(
+      {required this.authState, required this.notificationsSetupState});
 
   @override
   final AuthState authState;
+  @override
+  final RequestState<Unit> notificationsSetupState;
 
   @override
   String toString() {
-    return 'SplashState(authState: $authState)';
+    return 'SplashState(authState: $authState, notificationsSetupState: $notificationsSetupState)';
   }
 
   @override
@@ -129,11 +158,15 @@ class _$SplashStateImpl implements _SplashState {
         (other.runtimeType == runtimeType &&
             other is _$SplashStateImpl &&
             (identical(other.authState, authState) ||
-                other.authState == authState));
+                other.authState == authState) &&
+            (identical(
+                    other.notificationsSetupState, notificationsSetupState) ||
+                other.notificationsSetupState == notificationsSetupState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, authState);
+  int get hashCode =>
+      Object.hash(runtimeType, authState, notificationsSetupState);
 
   /// Create a copy of SplashState
   /// with the given fields replaced by the non-null parameter values.
@@ -145,11 +178,15 @@ class _$SplashStateImpl implements _SplashState {
 }
 
 abstract class _SplashState implements SplashState {
-  const factory _SplashState({required final AuthState authState}) =
+  const factory _SplashState(
+          {required final AuthState authState,
+          required final RequestState<Unit> notificationsSetupState}) =
       _$SplashStateImpl;
 
   @override
   AuthState get authState;
+  @override
+  RequestState<Unit> get notificationsSetupState;
 
   /// Create a copy of SplashState
   /// with the given fields replaced by the non-null parameter values.

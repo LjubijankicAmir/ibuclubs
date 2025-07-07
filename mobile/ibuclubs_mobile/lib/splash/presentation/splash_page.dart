@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibuclubs_mobile/core/di/services.dart';
 import 'package:ibuclubs_mobile/core/presentation/routes.gr.dart';
 import 'package:ibuclubs_mobile/core/presentation/widgets/fade_in_widget.dart';
+import 'package:ibuclubs_mobile/core/presentation/widgets/request/request_failure_snack.dart';
 import 'package:ibuclubs_mobile/core/presentation/widgets/slide_in_widget.dart';
 import 'package:ibuclubs_mobile/splash/application/splash_bloc.dart';
 
@@ -17,25 +18,38 @@ class SplashPage extends StatelessWidget {
     final appRouter = AutoRouter.of(context);
     return BlocProvider<SplashBloc>(
       create: (context) => bloc..add(SplashEvent.initialize()),
-      child: BlocListener<SplashBloc, SplashState>(
-        listener:
-            (context, state) => state.authState.when(
-              initial: () => null,
-              authenticated: (_) {
-                Future.delayed(
-                  const Duration(seconds: 2),
-                  () => appRouter.replace(MainRoute()),
-                );
-                return null;
-              },
-              unauthenticated: (_) {
-                Future.delayed(
-                  const Duration(seconds: 2),
-                  () => appRouter.replace(SignInRoute()),
-                );
-                return null;
-              },
-            ),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<SplashBloc, SplashState>(
+            listener:
+                (context, state) => state.authState.when(
+                  initial: () => null,
+                  authenticated: (_) {
+                    Future.delayed(
+                      const Duration(seconds: 2),
+                      () => appRouter.replace(MainRoute()),
+                    );
+                    return null;
+                  },
+                  unauthenticated: (_) {
+                    Future.delayed(
+                      const Duration(seconds: 2),
+                      () => appRouter.replace(SignInRoute()),
+                    );
+                    return null;
+                  },
+                ),
+          ),
+          BlocListener<SplashBloc, SplashState>(
+            listener:
+                (context, state) => state.notificationsSetupState.maybeWhen(
+                  // ignore: body_might_complete_normally_nullable
+                  orElse: () {},
+                  failed:
+                      (failure) => RequestFailureSnack.show(context, failure),
+                ),
+          ),
+        ],
         child: Scaffold(
           backgroundColor: Theme.of(context).primaryColorDark,
           body: Center(

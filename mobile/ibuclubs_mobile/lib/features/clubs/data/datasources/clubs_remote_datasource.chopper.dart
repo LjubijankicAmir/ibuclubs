@@ -64,6 +64,51 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
   }
 
   @override
+  Future<Response<BuiltList<ClubMemberDto>>> getMembersWithRoles(
+      String clubId) {
+    final Uri $url = Uri.parse('/club/getMembersWithRoles/${clubId}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<BuiltList<ClubMemberDto>, ClubMemberDto>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> changeMemberRole(
+    String clubId,
+    String memberId,
+    String role,
+  ) {
+    final Uri $url =
+        Uri.parse('/club/changeMemberRole/${clubId}/members/${memberId}/role');
+    final Map<String, dynamic> $params = <String, dynamic>{'role': role};
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> kickMember(
+    String clubId,
+    String memberId,
+  ) {
+    final Uri $url =
+        Uri.parse('/club/kickMember/${clubId}/members/${memberId}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<ClubDetailsDto>> getClubById(String clubId) {
     final Uri $url = Uri.parse('/club/getClubById/${clubId}');
     final Request $request = Request(

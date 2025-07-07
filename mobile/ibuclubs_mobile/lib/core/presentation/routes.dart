@@ -16,6 +16,7 @@ class AppRouter extends RootStackRouter {
           children: [
             AutoRoute(page: ClubsRoute.page, initial: true),
             AutoRoute(page: ClubDetailsRoute.page),
+            AutoRoute(page: ClubMembersRoute.page),
           ],
         ),
 

@@ -28,6 +28,8 @@ class ClubsPage extends StatelessWidget {
                   (response) => Container(
                     color: Colors.grey.shade100,
                     child: RefreshIndicator(
+                      color: kPrimaryColor,
+                      backgroundColor: Colors.white,
                       onRefresh: () async {
                         bloc.add(const ClubsEvent.initialize());
                       },

@@ -4,12 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibuclubs_mobile/core/di/services.dart';
+import 'package:ibuclubs_mobile/core/presentation/routes.gr.dart';
 import 'package:ibuclubs_mobile/core/presentation/style.dart';
 import 'package:ibuclubs_mobile/core/presentation/widgets/request/request_failure_snack.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/application/club_details_bloc.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/presentation/widgets/join_button.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/presentation/widgets/leave_button.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> _joinViber(String inviteUrl) async {
@@ -36,7 +36,8 @@ Future<void> _joinViber(String inviteUrl) async {
 @RoutePage()
 class ClubDetailsPage extends StatelessWidget {
   final String id;
-  const ClubDetailsPage({super.key, required this.id});
+  final String? role;
+  const ClubDetailsPage({super.key, required this.id, required this.role});
 
   @override
   Widget build(BuildContext context) {
@@ -57,71 +58,8 @@ class ClubDetailsPage extends StatelessWidget {
         builder:
             (context, state) => state.requestState.maybeMap(
               orElse:
-                  () => Scaffold(
-                    appBar: AppBar(
-                      title: Text(
-                        "Club details",
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: kBackgroundColor,
-                        ),
-                      ),
-                      backgroundColor: kPrimaryColor,
-                      iconTheme: const IconThemeData(color: kBackgroundColor),
-                    ),
-                    body: SingleChildScrollView(
-                      child: Padding(
-                        padding: kDefaultPadding,
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              Container(
-                                width: 120,
-                                height: 24,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              Container(
-                                width: double.infinity,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              const SizedBox(height: 32),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Container(
-                                  width: 100,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                  () => Center(
+                    child: CircularProgressIndicator(color: kPrimaryColor),
                   ),
               failed: (failure) => SizedBox.shrink(),
               success: (result) {
@@ -173,6 +111,28 @@ class ClubDetailsPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  if (role == "Owner" || role == "Admin")
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: TextButton.icon(
+                                        onPressed:
+                                            () =>
+                                                AutoRouter.of(context).navigate(
+                                                  ClubMembersRoute(
+                                                    clubId: result.result.id,
+                                                    role: role!,
+                                                  ),
+                                                ),
+                                        label: Text('Manage members'),
+                                        icon: Icon(
+                                          Icons.people,
+                                          color: Colors.grey.shade600,
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: Colors.grey.shade600,
+                                        ),
+                                      ),
+                                    ),
                                   const SizedBox(height: 32),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -298,41 +258,46 @@ class ClubDetailsPage extends StatelessWidget {
                                       )
                                       : SizedBox.shrink(),
                                   const SizedBox(height: 32),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 64),
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child:
-                                          result.result.isEnrolled
-                                              ? LeaveButton(
-                                                onPressed: () {
-                                                  bloc.add(
-                                                    ClubDetailsEvent.updateMembership(
-                                                      clubId: result.result.id,
-                                                      isMember: false,
-                                                    ),
-                                                  );
+                                  if (role != "Owner")
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: 64,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child:
+                                            result.result.isEnrolled
+                                                ? LeaveButton(
+                                                  onPressed: () {
+                                                    bloc.add(
+                                                      ClubDetailsEvent.updateMembership(
+                                                        clubId:
+                                                            result.result.id,
+                                                        isMember: false,
+                                                      ),
+                                                    );
 
-                                                  AutoRouter.of(
-                                                    context,
-                                                  ).maybePop();
-                                                },
-                                              )
-                                              : JoinButton(
-                                                onPressed: () {
-                                                  bloc.add(
-                                                    ClubDetailsEvent.updateMembership(
-                                                      clubId: result.result.id,
-                                                      isMember: true,
-                                                    ),
-                                                  );
-                                                  AutoRouter.of(
-                                                    context,
-                                                  ).maybePop();
-                                                },
-                                              ),
+                                                    AutoRouter.of(
+                                                      context,
+                                                    ).maybePop();
+                                                  },
+                                                )
+                                                : JoinButton(
+                                                  onPressed: () {
+                                                    bloc.add(
+                                                      ClubDetailsEvent.updateMembership(
+                                                        clubId:
+                                                            result.result.id,
+                                                        isMember: true,
+                                                      ),
+                                                    );
+                                                    AutoRouter.of(
+                                                      context,
+                                                    ).maybePop();
+                                                  },
+                                                ),
+                                      ),
                                     ),
-                                  ),
                                 ],
                               ),
                             ),
