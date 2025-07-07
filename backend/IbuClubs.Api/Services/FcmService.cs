@@ -79,10 +79,11 @@ namespace IbuClubs.Api.Services
                 .Distinct()
                 .ToListAsync();
 
-            var tokens = await dbContext.FcmTokens
+            var tokens =  dbContext.FcmTokens
+                .AsEnumerable()    
                 .Where(t => memberIds.Contains(t.UserId))
                 .Select(t => t.Token)
-                .ToListAsync();
+                .ToList();
 
             foreach (var token in tokens)
             {
