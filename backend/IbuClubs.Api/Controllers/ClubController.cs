@@ -222,8 +222,12 @@ public class ClubController(IClubService _clubService,FcmService _fcmService , I
     {
         try
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim is null)
+                return Unauthorized("Unauthorized");
             var members = await _clubService.GetClubMembers(clubId: id);
-            return Ok(members);
+            var filtered = members.Where(m => m.StudentId.ToString() != userIdClaim).ToList();
+            return Ok(filtered);
         }
         catch (KeyNotFoundException keyException)
         {
