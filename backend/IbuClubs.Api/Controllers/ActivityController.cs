@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ActivityController(IActivityService _activityService, FcmService _fcmService IMapper _mapper) : ControllerBase
+public class ActivityController(IActivityService _activityService, FcmService _fcmService, IMapper _mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllActivities()
