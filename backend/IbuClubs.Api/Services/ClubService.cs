@@ -54,6 +54,23 @@ public class ClubService : IClubService
         return await _repository.GetClubMembers(clubId);
     }
 
+    public async Task RemoveMemberAsync(string clubId, string userId)
+    {
+        await _repositoryMembership.KickMember(userId, clubId);
+    }
+
+    public async Task ChangeMemberRoleAsync(string clubId, string userId, string role)
+    {
+        var membership = await _repositoryMembership
+            .GetByUserAndClubAsync(Guid.Parse(userId), Guid.Parse(clubId));
+        
+        if (membership == null)
+            throw new KeyNotFoundException($"Membership not found");
+        
+        membership.Role = role;
+        await _repositoryMembership.UpdateAsync(membership);
+    }
+
     public async Task LeaveClubAsync(string userId, string clubId)
     {
         await _repository.LeaveClubAsync(userId, clubId);

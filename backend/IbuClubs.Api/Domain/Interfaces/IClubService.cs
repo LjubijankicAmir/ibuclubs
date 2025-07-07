@@ -11,6 +11,8 @@ public interface IClubService
     Task EnrollUserAsync(string userId, string clubId);
     Task<IEnumerable<Student>> GetEnrolledStudentsAsync(string clubId);
     Task<IEnumerable<ClubMemberDto>> GetClubMembers(string clubId);
+    Task RemoveMemberAsync(string clubId, string userId);
+    Task ChangeMemberRoleAsync(string clubId, string userId, string role);
     Task LeaveClubAsync(string userId, string clubId);
     Task<Club?> GetOwnedClubAsync(string userId);
     Task<IEnumerable<Membership>> GetByUserIdAsync(string userId);

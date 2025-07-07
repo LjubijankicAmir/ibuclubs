@@ -258,6 +258,44 @@ public class ClubController(IClubService _clubService,FcmService _fcmService , I
         }
     }
 
+    [HttpDelete("{clubId}/members/{id}")]
+    [Authorize]
+    public async Task<IActionResult> KickMember(string clubId, string id)
+    {
+        try
+        {
+            await _clubService.RemoveMemberAsync(clubId, id);
+            return Ok();
+        }
+        catch (KeyNotFoundException keyException)
+        {
+            return NotFound(keyException.Message);
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
+        }
+    }
+
+    [HttpPut("{clubId}/members/{id}/role")]
+    [Authorize]
+    public async Task<IActionResult> ChangeMemberRole(string clubId, string id, string role)
+    {
+        try
+        {
+            await _clubService.ChangeMemberRoleAsync(clubId, id, role);
+            return Ok();
+        }
+        catch (KeyNotFoundException keyException)
+        {
+            return NotFound(keyException.Message);
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
+        }
+    }
+
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetOwnedClub()

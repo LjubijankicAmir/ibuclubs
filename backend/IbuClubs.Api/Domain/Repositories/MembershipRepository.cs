@@ -23,14 +23,25 @@ public class MembershipRepository(IbuClubsDbContext context) : IRepository<Membe
         await context.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(Membership entity)
+    public async Task UpdateAsync(Membership entity)
     {
-        throw new NotImplementedException();
+        context.Memberships.Update(entity);
+        await context.SaveChangesAsync();
     }
 
     public Task DeleteAsync(string id)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task KickMember(string studentId, string clubId)
+    {
+        var membership = await context.Memberships.Where(m => m.StudentId == Guid.Parse(studentId)).FirstOrDefaultAsync();
+        if (membership != null)
+        {
+            context.Memberships.Remove(membership);
+            await context.SaveChangesAsync();
+        }
     }
     
     public async Task<Membership?> GetByUserAndClubAsync(Guid studentId, Guid clubId)
