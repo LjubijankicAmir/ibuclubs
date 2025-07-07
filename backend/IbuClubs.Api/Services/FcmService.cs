@@ -44,6 +44,63 @@ namespace IbuClubs.Api.Services
 
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task NotifyClubOwnerAsync(string clubId, string title, string body)
+        {
+            var owner = await dbContext.Memberships
+                .Where(m => m.ClubId.ToString() == clubId && m.Role == "Owner")
+                .FirstOrDefaultAsync();
+
+            if (owner == null)
+            {
+                throw new KeyNotFoundException("Owner not found");
+            }
+
+            var ownerId = owner.StudentId.ToString();
+            
+            var token = await dbContext.FcmTokens
+                .Where(t => t.UserId == ownerId)
+                .Select(t => t.Token)
+                .FirstOrDefaultAsync();
+
+            if (token == null)
+            {
+                throw new KeyNotFoundException("Token not found");
+            }
+            
+            await SendNotificationAsync(token, title, body);
+        }
+        
+        public async Task NotifyClubMembersOfNewActivity(Guid clubId, string activityName)
+        {
+            var memberIds = await dbContext.Memberships
+                .Where(m => m.ClubId == clubId && m.Role == "Member")
+                .Select(m => m.StudentId.ToString())
+                .Distinct()
+                .ToListAsync();
+
+            var tokens = await dbContext.FcmTokens
+                .Where(t => memberIds.Contains(t.UserId))
+                .Select(t => t.Token)
+                .ToListAsync();
+
+            foreach (var token in tokens)
+            {
+                try
+                {
+                    await SendNotificationAsync(
+                        token,
+                        "New club activity posted",
+                        $"A new activity \"{activityName}\" was added in your club"
+                    );
+                }
+                catch
+                {
+                    // Skip this token on failure
+                }
+            }
+        }
+
         
         
         public static async Task SendNotificationAsync(string token, string title, string body)

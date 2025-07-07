@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AutoMapper;
 using IbuClubs.Api.Contracts.DTOs.Activity;
 using IbuClubs.Api.Domain.Interfaces;
+using IbuClubs.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace IbuClubs.Api.Controllers;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ActivityController(IActivityService _activityService, IMapper _mapper) : ControllerBase
+public class ActivityController(IActivityService _activityService, FcmService _fcmService IMapper _mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllActivities()
@@ -99,6 +100,7 @@ public class ActivityController(IActivityService _activityService, IMapper _mapp
         try
         {
             await _activityService.CreateActivityAsync(activityDto);
+            await _fcmService.NotifyClubMembersOfNewActivity(Guid.Parse(activityDto.ClubId), activityDto.Name);
             return Ok(new { message = "activity created successfully!" });
         }
         catch (Exception ex)

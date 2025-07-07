@@ -4,6 +4,7 @@ using IbuClubs.Api.Contracts.DTOs.Club;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Domain.Repositories;
+using IbuClubs.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ClubController(IClubService _clubService, IMapper _mapper, MembershipRepository _membershipRepository) : ControllerBase
+public class ClubController(IClubService _clubService,FcmService _fcmService , IMapper _mapper, MembershipRepository _membershipRepository) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllClubs()
@@ -198,6 +199,7 @@ public class ClubController(IClubService _clubService, IMapper _mapper, Membersh
         try
         {
             await _clubService.ReviewClubAsync(id, dto.status);
+            await _fcmService.NotifyClubOwnerAsync(id, "Club reviewed", "Your club has been reviewed by the administation");
             return Ok($"Club marked as {dto.status}");
         }
         catch (KeyNotFoundException keyException)
