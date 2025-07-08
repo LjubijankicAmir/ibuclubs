@@ -70,6 +70,33 @@ namespace IbuClubs.Api.Services
             
             await SendNotificationAsync(token, title, body);
         }
+
+        public async Task NotifyAllMembersAsync(string clubId, string title, string body)
+        {
+            var memberIds = await dbContext.Memberships
+                .Where(m => m.ClubId == Guid.Parse(clubId) && m.Role != "Owner")
+                .Select(m => m.StudentId.ToString())
+                .Distinct()
+                .ToListAsync();
+
+            var tokens =  dbContext.FcmTokens
+                .AsEnumerable()    
+                .Where(t => memberIds.Contains(t.UserId))
+                .Select(t => t.Token)
+                .ToList();
+
+            foreach (var token in tokens)
+            {
+                try
+                {
+                    await SendNotificationAsync(token, title, body);
+                }
+                catch 
+                {
+                    //
+                }
+            }
+        }
         
         public async Task NotifyClubMembersOfNewActivity(Guid clubId, string activityName)
         {

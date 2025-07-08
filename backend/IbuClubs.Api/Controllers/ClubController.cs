@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AutoMapper;
 using IbuClubs.Api.Contracts.DTOs.Club;
+using IbuClubs.Api.Contracts.DTOs.Notifications;
 using IbuClubs.Api.Domain.Interfaces;
 using IbuClubs.Api.Domain.Models;
 using IbuClubs.Api.Domain.Repositories;
@@ -228,6 +229,25 @@ public class ClubController(IClubService _clubService,FcmService _fcmService , I
             var members = await _clubService.GetClubMembers(clubId: id);
             var filtered = members.Where(m => m.StudentId.ToString() != userIdClaim).ToList();
             return Ok(filtered);
+        }
+        catch (KeyNotFoundException keyException)
+        {
+            return NotFound(keyException.Message);
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(500, $"Internal server error: {exception.Message}");
+        }
+    }
+    
+    [HttpPost("{id}")]
+    [Authorize]
+    public async Task<IActionResult> NotifyMembers(string id, [FromBody] NotificationDto notificationDto)
+    {
+        try
+        {
+            await _fcmService.NotifyAllMembersAsync(id, notificationDto.Title, notificationDto.Description);
+            return Ok();
         }
         catch (KeyNotFoundException keyException)
         {
