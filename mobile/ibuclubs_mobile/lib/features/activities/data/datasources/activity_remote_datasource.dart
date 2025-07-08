@@ -20,6 +20,11 @@ abstract class ActivityRemoteDatasource extends ChopperService {
   @GET(path: '/getUpcomingActivities')
   Future<Response<BuiltList<ActivityDto>>> getUpcomingActivities();
 
+  @GET(path: '/getPastClubActivities')
+  Future<Response<BuiltList<ActivityDto>>> getPastActivities(
+    @Query('clubId') String clubId,
+  );
+
   @POST(path: '/enroll')
   Future<Response> enrollToActivity(@Query() String activityId);
 }

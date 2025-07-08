@@ -36,6 +36,24 @@ class ActivityRepository {
     }
   }
 
+  Future<Either<RequestFailure, List<Activity>>> getPastActivities(
+    String clubId,
+  ) async {
+    try {
+      final response = await _remoteDatasource.getPastActivities(clubId);
+
+      if (response.isSuccessful) {
+        return right(
+          response.body!.map((activity) => activity.toDomain()).toList(),
+        );
+      }
+
+      return left(response.toRequestFailure());
+    } catch (e) {
+      return left(await e.toRequestFailure());
+    }
+  }
+
   Future<Option<RequestFailure>> enrollToActivity(String activityId) async {
     try {
       final response = await _remoteDatasource.enrollToActivity(activityId);

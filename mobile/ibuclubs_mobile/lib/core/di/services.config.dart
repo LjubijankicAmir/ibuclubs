@@ -156,10 +156,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i271.ClubsRepository>(),
           gh<_i442.ActivityRepository>(),
         ));
+    gh.factory<_i196.ClubDetailsBloc>(() => _i196.ClubDetailsBloc(
+          gh<_i271.ClubsRepository>(),
+          gh<_i442.ActivityRepository>(),
+        ));
     gh.factory<_i266.ClubMembersBloc>(
         () => _i266.ClubMembersBloc(gh<_i271.ClubsRepository>()));
-    gh.factory<_i196.ClubDetailsBloc>(
-        () => _i196.ClubDetailsBloc(gh<_i271.ClubsRepository>()));
     gh.factory<_i776.ClubsBloc>(
         () => _i776.ClubsBloc(gh<_i271.ClubsRepository>()));
     gh.factory<_i460.ActivitiesBloc>(() => _i460.ActivitiesBloc(

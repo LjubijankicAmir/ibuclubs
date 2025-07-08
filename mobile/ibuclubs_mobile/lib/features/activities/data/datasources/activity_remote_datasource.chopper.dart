@@ -42,6 +42,19 @@ final class _$ActivityRemoteDatasource extends ActivityRemoteDatasource {
   }
 
   @override
+  Future<Response<BuiltList<ActivityDto>>> getPastActivities(String clubId) {
+    final Uri $url = Uri.parse('/activity/getPastClubActivities');
+    final Map<String, dynamic> $params = <String, dynamic>{'clubId': clubId};
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<BuiltList<ActivityDto>, ActivityDto>($request);
+  }
+
+  @override
   Future<Response<dynamic>> enrollToActivity(String activityId) {
     final Uri $url = Uri.parse('/activity/enroll');
     final Map<String, dynamic> $params = <String, dynamic>{

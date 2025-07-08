@@ -21,6 +21,8 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final today = DateTime.now();
+    final activityDate = DateTime.parse(activity.date);
     final status =
         activity.isEnrolled
             ? ActivityStatus.enrolled
@@ -30,7 +32,9 @@ class ActivityCard extends StatelessWidget {
                   : ActivityStatus.open,
             );
     final statusString =
-        status == ActivityStatus.enrolled
+        activityDate.isBefore(today)
+            ? "Finished"
+            : status == ActivityStatus.enrolled
             ? "Enrolled"
             : (status == ActivityStatus.full ? "Full" : "Open");
     final rawDateTime = "${activity.date} ${activity.time}";

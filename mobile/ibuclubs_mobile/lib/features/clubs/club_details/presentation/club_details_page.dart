@@ -7,6 +7,7 @@ import 'package:ibuclubs_mobile/core/di/services.dart';
 import 'package:ibuclubs_mobile/core/presentation/routes.gr.dart';
 import 'package:ibuclubs_mobile/core/presentation/style.dart';
 import 'package:ibuclubs_mobile/core/presentation/widgets/request/request_failure_snack.dart';
+import 'package:ibuclubs_mobile/features/activities/presentation/widgets/activity_card.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/application/club_details_bloc.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/presentation/widgets/join_button.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/presentation/widgets/leave_button.dart';
@@ -178,45 +179,109 @@ class ClubDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 16),
-                                  Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.all(24),
-                                    decoration: BoxDecoration(
-                                      color: kPrimaryColor.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: Colors.grey[200]!,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.event_busy_outlined,
-                                          size: 48,
-                                          color: kPrimaryColor,
-                                        ),
-                                        const SizedBox(height: 12),
-                                        Text(
-                                          "Nothing to see here",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
+                                  state.pastActivitiesState.maybeMap(
+                                    orElse:
+                                        () => Center(
+                                          child: CircularProgressIndicator(
                                             color: kPrimaryColor,
                                           ),
                                         ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          "No past activities yet",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: kPrimaryColor.withOpacity(
-                                              0.7,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    success:
+                                        (response) =>
+                                            response.result.isEmpty
+                                                ? Container(
+                                                  width: double.infinity,
+                                                  padding: const EdgeInsets.all(
+                                                    24,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: kPrimaryColor
+                                                        .withOpacity(0.1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                    border: Border.all(
+                                                      color: Colors.grey[200]!,
+                                                      width: 1,
+                                                    ),
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .event_busy_outlined,
+                                                        size: 48,
+                                                        color: kPrimaryColor,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 12,
+                                                      ),
+                                                      Text(
+                                                        "Nothing to see here",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: kPrimaryColor,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 4),
+                                                      Text(
+                                                        "No past activities yet",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: kPrimaryColor
+                                                              .withOpacity(0.7),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                                : SizedBox(
+                                                  height: 150,
+                                                  child: ListView.separated(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemBuilder:
+                                                        (
+                                                          context,
+                                                          index,
+                                                        ) => Material(
+                                                          color:
+                                                              Colors
+                                                                  .transparent,
+                                                          child: InkWell(
+                                                            onTap:
+                                                                () => AutoRouter.of(
+                                                                  context,
+                                                                ).navigate(
+                                                                  ActivitiesRoute(),
+                                                                ),
+                                                            child: ActivityCard(
+                                                              width: 350,
+                                                              activity:
+                                                                  response
+                                                                      .result[index],
+                                                              canTap: false,
+                                                              isOwned: false,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                    separatorBuilder:
+                                                        (_, _) =>
+                                                            const SizedBox(
+                                                              width: 16,
+                                                            ),
+                                                    itemCount:
+                                                        response.result.length >
+                                                                3
+                                                            ? 3
+                                                            : response
+                                                                .result
+                                                                .length,
+                                                  ),
+                                                ),
                                   ),
                                   chat
                                       ? const SizedBox(height: 32)

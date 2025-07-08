@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ClubDetailsState {
   RequestState<ClubDetails> get requestState =>
       throw _privateConstructorUsedError;
+  RequestState<List<Activity>> get pastActivitiesState =>
+      throw _privateConstructorUsedError;
   RequestState<Unit> get membershipState => throw _privateConstructorUsedError;
 
   /// Create a copy of ClubDetailsState
@@ -35,9 +37,11 @@ abstract class $ClubDetailsStateCopyWith<$Res> {
   @useResult
   $Res call(
       {RequestState<ClubDetails> requestState,
+      RequestState<List<Activity>> pastActivitiesState,
       RequestState<Unit> membershipState});
 
   $RequestStateCopyWith<ClubDetails, $Res> get requestState;
+  $RequestStateCopyWith<List<Activity>, $Res> get pastActivitiesState;
   $RequestStateCopyWith<Unit, $Res> get membershipState;
 }
 
@@ -57,6 +61,7 @@ class _$ClubDetailsStateCopyWithImpl<$Res, $Val extends ClubDetailsState>
   @override
   $Res call({
     Object? requestState = null,
+    Object? pastActivitiesState = null,
     Object? membershipState = null,
   }) {
     return _then(_value.copyWith(
@@ -64,6 +69,10 @@ class _$ClubDetailsStateCopyWithImpl<$Res, $Val extends ClubDetailsState>
           ? _value.requestState
           : requestState // ignore: cast_nullable_to_non_nullable
               as RequestState<ClubDetails>,
+      pastActivitiesState: null == pastActivitiesState
+          ? _value.pastActivitiesState
+          : pastActivitiesState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<Activity>>,
       membershipState: null == membershipState
           ? _value.membershipState
           : membershipState // ignore: cast_nullable_to_non_nullable
@@ -79,6 +88,17 @@ class _$ClubDetailsStateCopyWithImpl<$Res, $Val extends ClubDetailsState>
     return $RequestStateCopyWith<ClubDetails, $Res>(_value.requestState,
         (value) {
       return _then(_value.copyWith(requestState: value) as $Val);
+    });
+  }
+
+  /// Create a copy of ClubDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RequestStateCopyWith<List<Activity>, $Res> get pastActivitiesState {
+    return $RequestStateCopyWith<List<Activity>, $Res>(
+        _value.pastActivitiesState, (value) {
+      return _then(_value.copyWith(pastActivitiesState: value) as $Val);
     });
   }
 
@@ -103,10 +123,13 @@ abstract class _$$ClubDetailsStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {RequestState<ClubDetails> requestState,
+      RequestState<List<Activity>> pastActivitiesState,
       RequestState<Unit> membershipState});
 
   @override
   $RequestStateCopyWith<ClubDetails, $Res> get requestState;
+  @override
+  $RequestStateCopyWith<List<Activity>, $Res> get pastActivitiesState;
   @override
   $RequestStateCopyWith<Unit, $Res> get membershipState;
 }
@@ -125,6 +148,7 @@ class __$$ClubDetailsStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? requestState = null,
+    Object? pastActivitiesState = null,
     Object? membershipState = null,
   }) {
     return _then(_$ClubDetailsStateImpl(
@@ -132,6 +156,10 @@ class __$$ClubDetailsStateImplCopyWithImpl<$Res>
           ? _value.requestState
           : requestState // ignore: cast_nullable_to_non_nullable
               as RequestState<ClubDetails>,
+      pastActivitiesState: null == pastActivitiesState
+          ? _value.pastActivitiesState
+          : pastActivitiesState // ignore: cast_nullable_to_non_nullable
+              as RequestState<List<Activity>>,
       membershipState: null == membershipState
           ? _value.membershipState
           : membershipState // ignore: cast_nullable_to_non_nullable
@@ -144,16 +172,20 @@ class __$$ClubDetailsStateImplCopyWithImpl<$Res>
 
 class _$ClubDetailsStateImpl implements _ClubDetailsState {
   _$ClubDetailsStateImpl(
-      {required this.requestState, required this.membershipState});
+      {required this.requestState,
+      required this.pastActivitiesState,
+      required this.membershipState});
 
   @override
   final RequestState<ClubDetails> requestState;
+  @override
+  final RequestState<List<Activity>> pastActivitiesState;
   @override
   final RequestState<Unit> membershipState;
 
   @override
   String toString() {
-    return 'ClubDetailsState(requestState: $requestState, membershipState: $membershipState)';
+    return 'ClubDetailsState(requestState: $requestState, pastActivitiesState: $pastActivitiesState, membershipState: $membershipState)';
   }
 
   @override
@@ -163,12 +195,15 @@ class _$ClubDetailsStateImpl implements _ClubDetailsState {
             other is _$ClubDetailsStateImpl &&
             (identical(other.requestState, requestState) ||
                 other.requestState == requestState) &&
+            (identical(other.pastActivitiesState, pastActivitiesState) ||
+                other.pastActivitiesState == pastActivitiesState) &&
             (identical(other.membershipState, membershipState) ||
                 other.membershipState == membershipState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, requestState, membershipState);
+  int get hashCode => Object.hash(
+      runtimeType, requestState, pastActivitiesState, membershipState);
 
   /// Create a copy of ClubDetailsState
   /// with the given fields replaced by the non-null parameter values.
@@ -183,11 +218,14 @@ class _$ClubDetailsStateImpl implements _ClubDetailsState {
 abstract class _ClubDetailsState implements ClubDetailsState {
   factory _ClubDetailsState(
           {required final RequestState<ClubDetails> requestState,
+          required final RequestState<List<Activity>> pastActivitiesState,
           required final RequestState<Unit> membershipState}) =
       _$ClubDetailsStateImpl;
 
   @override
   RequestState<ClubDetails> get requestState;
+  @override
+  RequestState<List<Activity>> get pastActivitiesState;
   @override
   RequestState<Unit> get membershipState;
 
