@@ -33,6 +33,11 @@ public class ActivityService : IActivityService
         return await _repository.GetUpcomingForUserAsync(userId);
     }
 
+    public async Task<IEnumerable<Activity>> GetPastClubActivitiesAsync(string clubId)
+    {
+        return await _repository.GetPastClubActivitiesAsync(clubId);
+    }
+
     public async Task<Activity> GetActivityByIdAsync(string id)
     {
         var activity = await _repository.GetByIdAsync(id);

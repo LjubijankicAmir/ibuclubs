@@ -47,6 +47,19 @@ public class ActivityRepository(IbuClubsDbContext context) : IRepository<Activit
         return activities;
     }
 
+    public async Task<IEnumerable<Activity>> GetPastClubActivitiesAsync(string clubId)
+    {
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        
+        var activities = await context.Activities
+            .Where(a => a.Date < today && a.ClubId == Guid.Parse(clubId))
+            .OrderBy(a => a.Date)
+            .ThenBy(a => a.Time)
+            .ToListAsync();
+        
+        return activities;
+    }
+
     public async Task EnrollUserAsync(string userId, string activityId)
     {
         var studentGuid = Guid.Parse(userId);

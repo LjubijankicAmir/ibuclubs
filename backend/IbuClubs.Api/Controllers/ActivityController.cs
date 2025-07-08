@@ -49,6 +49,21 @@ public class ActivityController(IActivityService _activityService, FcmService _f
         }
     }
 
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetPastClubActivities(string clubId)
+    {
+        try
+        {
+            var pastActivities = await _activityService.GetPastClubActivitiesAsync(clubId);
+            return Ok(pastActivities);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> Enroll(string activityId)
