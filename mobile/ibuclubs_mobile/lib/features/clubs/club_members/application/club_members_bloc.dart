@@ -18,6 +18,7 @@ class ClubMembersBloc extends Bloc<ClubMembersEvent, ClubMembersState> {
     on<_PromoteMember>(_onPromoteMember);
     on<_DemoteMember>(_onDemoteMember);
     on<_KickMember>(_onKickMember);
+    on<_PushNotification>(_onPushNotification);
   }
 
   Future<void> _onInitialize(
@@ -94,6 +95,28 @@ class ClubMembersBloc extends Bloc<ClubMembersEvent, ClubMembersState> {
     emit(
       state.copyWith(
         actionRequestState: result.fold(
+          (failure) => RequestState.failed(failure),
+          (success) => RequestState.success(unit),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onPushNotification(
+    _PushNotification event,
+    Emitter<ClubMembersState> emit,
+  ) async {
+    emit(state.copyWith(pushNotificationState: RequestState.processing()));
+
+    final result = await clubsRepository.notifyMembers(
+      event.clubId,
+      event.title,
+      event.message,
+    );
+
+    emit(
+      state.copyWith(
+        pushNotificationState: result.fold(
           (failure) => RequestState.failed(failure),
           (success) => RequestState.success(unit),
         ),

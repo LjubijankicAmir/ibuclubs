@@ -6,6 +6,7 @@ import 'package:ibuclubs_mobile/core/presentation/style.dart';
 import 'package:ibuclubs_mobile/core/presentation/widgets/request/request_failure_snack.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_members/application/club_members_bloc.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_members/presentation/widgets/member_card.dart';
+import 'package:ibuclubs_mobile/features/clubs/club_members/presentation/widgets/notify_members_bottom_sheet.dart';
 
 @RoutePage()
 class ClubMembersPage extends StatelessWidget {
@@ -95,7 +96,9 @@ class ClubMembersPage extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         GestureDetector(
-                          onTap: () {},
+                          onTap:
+                              () =>
+                                  showNotifyMembersBottomSheet(context, clubId),
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Container(

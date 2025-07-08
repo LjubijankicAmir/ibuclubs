@@ -109,6 +109,22 @@ final class _$ClubsRemoteDatasource extends ClubsRemoteDatasource {
   }
 
   @override
+  Future<Response<dynamic>> notifyMembers(
+    String clubId,
+    NotificationDto notificationDto,
+  ) {
+    final Uri $url = Uri.parse('/club/notifyMembers/${clubId}');
+    final $body = notificationDto;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
   Future<Response<ClubDetailsDto>> getClubById(String clubId) {
     final Uri $url = Uri.parse('/club/getClubById/${clubId}');
     final Request $request = Request(

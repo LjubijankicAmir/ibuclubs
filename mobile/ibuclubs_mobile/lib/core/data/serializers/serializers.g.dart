@@ -18,6 +18,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FcmTokenDto.serializer)
       ..add(JwtDto.serializer)
       ..add(MembershipDto.serializer)
+      ..add(NotificationDto.serializer)
       ..add(RefreshTokenDto.serializer)
       ..add(SignInDto.serializer)
       ..addBuilderFactory(

@@ -9,4 +9,9 @@ class ClubMembersEvent with _$ClubMembersEvent {
       _DemoteMember;
   const factory ClubMembersEvent.kickMember(String clubId, String memberId) =
       _KickMember;
+  const factory ClubMembersEvent.pushNotification(
+    String clubId,
+    String title,
+    String message,
+  ) = _PushNotification;
 }

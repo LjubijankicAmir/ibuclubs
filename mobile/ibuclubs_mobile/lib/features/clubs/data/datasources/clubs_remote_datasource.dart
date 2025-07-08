@@ -3,6 +3,7 @@ import 'package:chopper/chopper.dart';
 import 'package:ibuclubs_mobile/core/data/chopper_clients.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_details/data/club_details_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/club_members/data/dto/club_member_dto.dart';
+import 'package:ibuclubs_mobile/features/clubs/club_members/data/dto/notification_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/club_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/create_club_dto.dart';
 import 'package:ibuclubs_mobile/features/clubs/data/dto/membership_dto.dart';
@@ -45,6 +46,12 @@ abstract class ClubsRemoteDatasource extends ChopperService {
   Future<Response> kickMember(
     @Path('clubId') String clubId,
     @Path('memberId') String memberId,
+  );
+
+  @POST(path: '/notifyMembers/{clubId}')
+  Future<Response> notifyMembers(
+    @Path('clubId') String clubId,
+    @Body() NotificationDto notificationDto,
   );
 
   @GET(path: '/getClubById/{clubId}')

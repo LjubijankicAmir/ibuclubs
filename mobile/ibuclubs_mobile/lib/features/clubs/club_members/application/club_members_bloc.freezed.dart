@@ -20,6 +20,8 @@ mixin _$ClubMembersState {
       throw _privateConstructorUsedError;
   RequestState<Unit> get actionRequestState =>
       throw _privateConstructorUsedError;
+  RequestState<Unit> get pushNotificationState =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of ClubMembersState
   /// with the given fields replaced by the non-null parameter values.
@@ -36,10 +38,12 @@ abstract class $ClubMembersStateCopyWith<$Res> {
   @useResult
   $Res call(
       {RequestState<List<ClubMember>> requestState,
-      RequestState<Unit> actionRequestState});
+      RequestState<Unit> actionRequestState,
+      RequestState<Unit> pushNotificationState});
 
   $RequestStateCopyWith<List<ClubMember>, $Res> get requestState;
   $RequestStateCopyWith<Unit, $Res> get actionRequestState;
+  $RequestStateCopyWith<Unit, $Res> get pushNotificationState;
 }
 
 /// @nodoc
@@ -59,6 +63,7 @@ class _$ClubMembersStateCopyWithImpl<$Res, $Val extends ClubMembersState>
   $Res call({
     Object? requestState = null,
     Object? actionRequestState = null,
+    Object? pushNotificationState = null,
   }) {
     return _then(_value.copyWith(
       requestState: null == requestState
@@ -68,6 +73,10 @@ class _$ClubMembersStateCopyWithImpl<$Res, $Val extends ClubMembersState>
       actionRequestState: null == actionRequestState
           ? _value.actionRequestState
           : actionRequestState // ignore: cast_nullable_to_non_nullable
+              as RequestState<Unit>,
+      pushNotificationState: null == pushNotificationState
+          ? _value.pushNotificationState
+          : pushNotificationState // ignore: cast_nullable_to_non_nullable
               as RequestState<Unit>,
     ) as $Val);
   }
@@ -93,6 +102,17 @@ class _$ClubMembersStateCopyWithImpl<$Res, $Val extends ClubMembersState>
       return _then(_value.copyWith(actionRequestState: value) as $Val);
     });
   }
+
+  /// Create a copy of ClubMembersState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RequestStateCopyWith<Unit, $Res> get pushNotificationState {
+    return $RequestStateCopyWith<Unit, $Res>(_value.pushNotificationState,
+        (value) {
+      return _then(_value.copyWith(pushNotificationState: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -105,12 +125,15 @@ abstract class _$$ClubMembersStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {RequestState<List<ClubMember>> requestState,
-      RequestState<Unit> actionRequestState});
+      RequestState<Unit> actionRequestState,
+      RequestState<Unit> pushNotificationState});
 
   @override
   $RequestStateCopyWith<List<ClubMember>, $Res> get requestState;
   @override
   $RequestStateCopyWith<Unit, $Res> get actionRequestState;
+  @override
+  $RequestStateCopyWith<Unit, $Res> get pushNotificationState;
 }
 
 /// @nodoc
@@ -128,6 +151,7 @@ class __$$ClubMembersStateImplCopyWithImpl<$Res>
   $Res call({
     Object? requestState = null,
     Object? actionRequestState = null,
+    Object? pushNotificationState = null,
   }) {
     return _then(_$ClubMembersStateImpl(
       requestState: null == requestState
@@ -138,6 +162,10 @@ class __$$ClubMembersStateImplCopyWithImpl<$Res>
           ? _value.actionRequestState
           : actionRequestState // ignore: cast_nullable_to_non_nullable
               as RequestState<Unit>,
+      pushNotificationState: null == pushNotificationState
+          ? _value.pushNotificationState
+          : pushNotificationState // ignore: cast_nullable_to_non_nullable
+              as RequestState<Unit>,
     ));
   }
 }
@@ -146,16 +174,20 @@ class __$$ClubMembersStateImplCopyWithImpl<$Res>
 
 class _$ClubMembersStateImpl implements _ClubMembersState {
   const _$ClubMembersStateImpl(
-      {required this.requestState, required this.actionRequestState});
+      {required this.requestState,
+      required this.actionRequestState,
+      required this.pushNotificationState});
 
   @override
   final RequestState<List<ClubMember>> requestState;
   @override
   final RequestState<Unit> actionRequestState;
+  @override
+  final RequestState<Unit> pushNotificationState;
 
   @override
   String toString() {
-    return 'ClubMembersState(requestState: $requestState, actionRequestState: $actionRequestState)';
+    return 'ClubMembersState(requestState: $requestState, actionRequestState: $actionRequestState, pushNotificationState: $pushNotificationState)';
   }
 
   @override
@@ -166,12 +198,14 @@ class _$ClubMembersStateImpl implements _ClubMembersState {
             (identical(other.requestState, requestState) ||
                 other.requestState == requestState) &&
             (identical(other.actionRequestState, actionRequestState) ||
-                other.actionRequestState == actionRequestState));
+                other.actionRequestState == actionRequestState) &&
+            (identical(other.pushNotificationState, pushNotificationState) ||
+                other.pushNotificationState == pushNotificationState));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, requestState, actionRequestState);
+  int get hashCode => Object.hash(
+      runtimeType, requestState, actionRequestState, pushNotificationState);
 
   /// Create a copy of ClubMembersState
   /// with the given fields replaced by the non-null parameter values.
@@ -186,13 +220,16 @@ class _$ClubMembersStateImpl implements _ClubMembersState {
 abstract class _ClubMembersState implements ClubMembersState {
   const factory _ClubMembersState(
           {required final RequestState<List<ClubMember>> requestState,
-          required final RequestState<Unit> actionRequestState}) =
+          required final RequestState<Unit> actionRequestState,
+          required final RequestState<Unit> pushNotificationState}) =
       _$ClubMembersStateImpl;
 
   @override
   RequestState<List<ClubMember>> get requestState;
   @override
   RequestState<Unit> get actionRequestState;
+  @override
+  RequestState<Unit> get pushNotificationState;
 
   /// Create a copy of ClubMembersState
   /// with the given fields replaced by the non-null parameter values.
@@ -211,6 +248,8 @@ mixin _$ClubMembersEvent {
     required TResult Function(String clubId, String memberId) promoteMember,
     required TResult Function(String clubId, String memberId) demoteMember,
     required TResult Function(String clubId, String memberId) kickMember,
+    required TResult Function(String clubId, String title, String message)
+        pushNotification,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -219,6 +258,8 @@ mixin _$ClubMembersEvent {
     TResult? Function(String clubId, String memberId)? promoteMember,
     TResult? Function(String clubId, String memberId)? demoteMember,
     TResult? Function(String clubId, String memberId)? kickMember,
+    TResult? Function(String clubId, String title, String message)?
+        pushNotification,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -227,6 +268,8 @@ mixin _$ClubMembersEvent {
     TResult Function(String clubId, String memberId)? promoteMember,
     TResult Function(String clubId, String memberId)? demoteMember,
     TResult Function(String clubId, String memberId)? kickMember,
+    TResult Function(String clubId, String title, String message)?
+        pushNotification,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -236,6 +279,7 @@ mixin _$ClubMembersEvent {
     required TResult Function(_PromoteMember value) promoteMember,
     required TResult Function(_DemoteMember value) demoteMember,
     required TResult Function(_KickMember value) kickMember,
+    required TResult Function(_PushNotification value) pushNotification,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -244,6 +288,7 @@ mixin _$ClubMembersEvent {
     TResult? Function(_PromoteMember value)? promoteMember,
     TResult? Function(_DemoteMember value)? demoteMember,
     TResult? Function(_KickMember value)? kickMember,
+    TResult? Function(_PushNotification value)? pushNotification,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -252,6 +297,7 @@ mixin _$ClubMembersEvent {
     TResult Function(_PromoteMember value)? promoteMember,
     TResult Function(_DemoteMember value)? demoteMember,
     TResult Function(_KickMember value)? kickMember,
+    TResult Function(_PushNotification value)? pushNotification,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -372,6 +418,8 @@ class _$InitializeImpl implements _Initialize {
     required TResult Function(String clubId, String memberId) promoteMember,
     required TResult Function(String clubId, String memberId) demoteMember,
     required TResult Function(String clubId, String memberId) kickMember,
+    required TResult Function(String clubId, String title, String message)
+        pushNotification,
   }) {
     return initialize(clubId);
   }
@@ -383,6 +431,8 @@ class _$InitializeImpl implements _Initialize {
     TResult? Function(String clubId, String memberId)? promoteMember,
     TResult? Function(String clubId, String memberId)? demoteMember,
     TResult? Function(String clubId, String memberId)? kickMember,
+    TResult? Function(String clubId, String title, String message)?
+        pushNotification,
   }) {
     return initialize?.call(clubId);
   }
@@ -394,6 +444,8 @@ class _$InitializeImpl implements _Initialize {
     TResult Function(String clubId, String memberId)? promoteMember,
     TResult Function(String clubId, String memberId)? demoteMember,
     TResult Function(String clubId, String memberId)? kickMember,
+    TResult Function(String clubId, String title, String message)?
+        pushNotification,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -409,6 +461,7 @@ class _$InitializeImpl implements _Initialize {
     required TResult Function(_PromoteMember value) promoteMember,
     required TResult Function(_DemoteMember value) demoteMember,
     required TResult Function(_KickMember value) kickMember,
+    required TResult Function(_PushNotification value) pushNotification,
   }) {
     return initialize(this);
   }
@@ -420,6 +473,7 @@ class _$InitializeImpl implements _Initialize {
     TResult? Function(_PromoteMember value)? promoteMember,
     TResult? Function(_DemoteMember value)? demoteMember,
     TResult? Function(_KickMember value)? kickMember,
+    TResult? Function(_PushNotification value)? pushNotification,
   }) {
     return initialize?.call(this);
   }
@@ -431,6 +485,7 @@ class _$InitializeImpl implements _Initialize {
     TResult Function(_PromoteMember value)? promoteMember,
     TResult Function(_DemoteMember value)? demoteMember,
     TResult Function(_KickMember value)? kickMember,
+    TResult Function(_PushNotification value)? pushNotification,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -537,6 +592,8 @@ class _$PromoteMemberImpl implements _PromoteMember {
     required TResult Function(String clubId, String memberId) promoteMember,
     required TResult Function(String clubId, String memberId) demoteMember,
     required TResult Function(String clubId, String memberId) kickMember,
+    required TResult Function(String clubId, String title, String message)
+        pushNotification,
   }) {
     return promoteMember(clubId, memberId);
   }
@@ -548,6 +605,8 @@ class _$PromoteMemberImpl implements _PromoteMember {
     TResult? Function(String clubId, String memberId)? promoteMember,
     TResult? Function(String clubId, String memberId)? demoteMember,
     TResult? Function(String clubId, String memberId)? kickMember,
+    TResult? Function(String clubId, String title, String message)?
+        pushNotification,
   }) {
     return promoteMember?.call(clubId, memberId);
   }
@@ -559,6 +618,8 @@ class _$PromoteMemberImpl implements _PromoteMember {
     TResult Function(String clubId, String memberId)? promoteMember,
     TResult Function(String clubId, String memberId)? demoteMember,
     TResult Function(String clubId, String memberId)? kickMember,
+    TResult Function(String clubId, String title, String message)?
+        pushNotification,
     required TResult orElse(),
   }) {
     if (promoteMember != null) {
@@ -574,6 +635,7 @@ class _$PromoteMemberImpl implements _PromoteMember {
     required TResult Function(_PromoteMember value) promoteMember,
     required TResult Function(_DemoteMember value) demoteMember,
     required TResult Function(_KickMember value) kickMember,
+    required TResult Function(_PushNotification value) pushNotification,
   }) {
     return promoteMember(this);
   }
@@ -585,6 +647,7 @@ class _$PromoteMemberImpl implements _PromoteMember {
     TResult? Function(_PromoteMember value)? promoteMember,
     TResult? Function(_DemoteMember value)? demoteMember,
     TResult? Function(_KickMember value)? kickMember,
+    TResult? Function(_PushNotification value)? pushNotification,
   }) {
     return promoteMember?.call(this);
   }
@@ -596,6 +659,7 @@ class _$PromoteMemberImpl implements _PromoteMember {
     TResult Function(_PromoteMember value)? promoteMember,
     TResult Function(_DemoteMember value)? demoteMember,
     TResult Function(_KickMember value)? kickMember,
+    TResult Function(_PushNotification value)? pushNotification,
     required TResult orElse(),
   }) {
     if (promoteMember != null) {
@@ -704,6 +768,8 @@ class _$DemoteMemberImpl implements _DemoteMember {
     required TResult Function(String clubId, String memberId) promoteMember,
     required TResult Function(String clubId, String memberId) demoteMember,
     required TResult Function(String clubId, String memberId) kickMember,
+    required TResult Function(String clubId, String title, String message)
+        pushNotification,
   }) {
     return demoteMember(clubId, memberId);
   }
@@ -715,6 +781,8 @@ class _$DemoteMemberImpl implements _DemoteMember {
     TResult? Function(String clubId, String memberId)? promoteMember,
     TResult? Function(String clubId, String memberId)? demoteMember,
     TResult? Function(String clubId, String memberId)? kickMember,
+    TResult? Function(String clubId, String title, String message)?
+        pushNotification,
   }) {
     return demoteMember?.call(clubId, memberId);
   }
@@ -726,6 +794,8 @@ class _$DemoteMemberImpl implements _DemoteMember {
     TResult Function(String clubId, String memberId)? promoteMember,
     TResult Function(String clubId, String memberId)? demoteMember,
     TResult Function(String clubId, String memberId)? kickMember,
+    TResult Function(String clubId, String title, String message)?
+        pushNotification,
     required TResult orElse(),
   }) {
     if (demoteMember != null) {
@@ -741,6 +811,7 @@ class _$DemoteMemberImpl implements _DemoteMember {
     required TResult Function(_PromoteMember value) promoteMember,
     required TResult Function(_DemoteMember value) demoteMember,
     required TResult Function(_KickMember value) kickMember,
+    required TResult Function(_PushNotification value) pushNotification,
   }) {
     return demoteMember(this);
   }
@@ -752,6 +823,7 @@ class _$DemoteMemberImpl implements _DemoteMember {
     TResult? Function(_PromoteMember value)? promoteMember,
     TResult? Function(_DemoteMember value)? demoteMember,
     TResult? Function(_KickMember value)? kickMember,
+    TResult? Function(_PushNotification value)? pushNotification,
   }) {
     return demoteMember?.call(this);
   }
@@ -763,6 +835,7 @@ class _$DemoteMemberImpl implements _DemoteMember {
     TResult Function(_PromoteMember value)? promoteMember,
     TResult Function(_DemoteMember value)? demoteMember,
     TResult Function(_KickMember value)? kickMember,
+    TResult Function(_PushNotification value)? pushNotification,
     required TResult orElse(),
   }) {
     if (demoteMember != null) {
@@ -871,6 +944,8 @@ class _$KickMemberImpl implements _KickMember {
     required TResult Function(String clubId, String memberId) promoteMember,
     required TResult Function(String clubId, String memberId) demoteMember,
     required TResult Function(String clubId, String memberId) kickMember,
+    required TResult Function(String clubId, String title, String message)
+        pushNotification,
   }) {
     return kickMember(clubId, memberId);
   }
@@ -882,6 +957,8 @@ class _$KickMemberImpl implements _KickMember {
     TResult? Function(String clubId, String memberId)? promoteMember,
     TResult? Function(String clubId, String memberId)? demoteMember,
     TResult? Function(String clubId, String memberId)? kickMember,
+    TResult? Function(String clubId, String title, String message)?
+        pushNotification,
   }) {
     return kickMember?.call(clubId, memberId);
   }
@@ -893,6 +970,8 @@ class _$KickMemberImpl implements _KickMember {
     TResult Function(String clubId, String memberId)? promoteMember,
     TResult Function(String clubId, String memberId)? demoteMember,
     TResult Function(String clubId, String memberId)? kickMember,
+    TResult Function(String clubId, String title, String message)?
+        pushNotification,
     required TResult orElse(),
   }) {
     if (kickMember != null) {
@@ -908,6 +987,7 @@ class _$KickMemberImpl implements _KickMember {
     required TResult Function(_PromoteMember value) promoteMember,
     required TResult Function(_DemoteMember value) demoteMember,
     required TResult Function(_KickMember value) kickMember,
+    required TResult Function(_PushNotification value) pushNotification,
   }) {
     return kickMember(this);
   }
@@ -919,6 +999,7 @@ class _$KickMemberImpl implements _KickMember {
     TResult? Function(_PromoteMember value)? promoteMember,
     TResult? Function(_DemoteMember value)? demoteMember,
     TResult? Function(_KickMember value)? kickMember,
+    TResult? Function(_PushNotification value)? pushNotification,
   }) {
     return kickMember?.call(this);
   }
@@ -930,6 +1011,7 @@ class _$KickMemberImpl implements _KickMember {
     TResult Function(_PromoteMember value)? promoteMember,
     TResult Function(_DemoteMember value)? demoteMember,
     TResult Function(_KickMember value)? kickMember,
+    TResult Function(_PushNotification value)? pushNotification,
     required TResult orElse(),
   }) {
     if (kickMember != null) {
@@ -952,5 +1034,191 @@ abstract class _KickMember implements ClubMembersEvent {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$KickMemberImplCopyWith<_$KickMemberImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PushNotificationImplCopyWith<$Res>
+    implements $ClubMembersEventCopyWith<$Res> {
+  factory _$$PushNotificationImplCopyWith(_$PushNotificationImpl value,
+          $Res Function(_$PushNotificationImpl) then) =
+      __$$PushNotificationImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String clubId, String title, String message});
+}
+
+/// @nodoc
+class __$$PushNotificationImplCopyWithImpl<$Res>
+    extends _$ClubMembersEventCopyWithImpl<$Res, _$PushNotificationImpl>
+    implements _$$PushNotificationImplCopyWith<$Res> {
+  __$$PushNotificationImplCopyWithImpl(_$PushNotificationImpl _value,
+      $Res Function(_$PushNotificationImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ClubMembersEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? clubId = null,
+    Object? title = null,
+    Object? message = null,
+  }) {
+    return _then(_$PushNotificationImpl(
+      null == clubId
+          ? _value.clubId
+          : clubId // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PushNotificationImpl implements _PushNotification {
+  const _$PushNotificationImpl(this.clubId, this.title, this.message);
+
+  @override
+  final String clubId;
+  @override
+  final String title;
+  @override
+  final String message;
+
+  @override
+  String toString() {
+    return 'ClubMembersEvent.pushNotification(clubId: $clubId, title: $title, message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PushNotificationImpl &&
+            (identical(other.clubId, clubId) || other.clubId == clubId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, clubId, title, message);
+
+  /// Create a copy of ClubMembersEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PushNotificationImplCopyWith<_$PushNotificationImpl> get copyWith =>
+      __$$PushNotificationImplCopyWithImpl<_$PushNotificationImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String clubId) initialize,
+    required TResult Function(String clubId, String memberId) promoteMember,
+    required TResult Function(String clubId, String memberId) demoteMember,
+    required TResult Function(String clubId, String memberId) kickMember,
+    required TResult Function(String clubId, String title, String message)
+        pushNotification,
+  }) {
+    return pushNotification(clubId, title, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String clubId)? initialize,
+    TResult? Function(String clubId, String memberId)? promoteMember,
+    TResult? Function(String clubId, String memberId)? demoteMember,
+    TResult? Function(String clubId, String memberId)? kickMember,
+    TResult? Function(String clubId, String title, String message)?
+        pushNotification,
+  }) {
+    return pushNotification?.call(clubId, title, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String clubId)? initialize,
+    TResult Function(String clubId, String memberId)? promoteMember,
+    TResult Function(String clubId, String memberId)? demoteMember,
+    TResult Function(String clubId, String memberId)? kickMember,
+    TResult Function(String clubId, String title, String message)?
+        pushNotification,
+    required TResult orElse(),
+  }) {
+    if (pushNotification != null) {
+      return pushNotification(clubId, title, message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initialize value) initialize,
+    required TResult Function(_PromoteMember value) promoteMember,
+    required TResult Function(_DemoteMember value) demoteMember,
+    required TResult Function(_KickMember value) kickMember,
+    required TResult Function(_PushNotification value) pushNotification,
+  }) {
+    return pushNotification(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initialize value)? initialize,
+    TResult? Function(_PromoteMember value)? promoteMember,
+    TResult? Function(_DemoteMember value)? demoteMember,
+    TResult? Function(_KickMember value)? kickMember,
+    TResult? Function(_PushNotification value)? pushNotification,
+  }) {
+    return pushNotification?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initialize value)? initialize,
+    TResult Function(_PromoteMember value)? promoteMember,
+    TResult Function(_DemoteMember value)? demoteMember,
+    TResult Function(_KickMember value)? kickMember,
+    TResult Function(_PushNotification value)? pushNotification,
+    required TResult orElse(),
+  }) {
+    if (pushNotification != null) {
+      return pushNotification(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PushNotification implements ClubMembersEvent {
+  const factory _PushNotification(
+          final String clubId, final String title, final String message) =
+      _$PushNotificationImpl;
+
+  @override
+  String get clubId;
+  String get title;
+  String get message;
+
+  /// Create a copy of ClubMembersEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PushNotificationImplCopyWith<_$PushNotificationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
