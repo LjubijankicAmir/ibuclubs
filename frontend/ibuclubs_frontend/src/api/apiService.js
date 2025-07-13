@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = "http://localhost:5297/api/";
+const BASE_URL = "https://ibuclubs-production.up.railway.app/api/";
 
 const ApiClient = axios.create({
     baseURL: BASE_URL,
@@ -32,7 +32,10 @@ export const StudentsApi = {
 
 export const ClubsApi = {
     getClubs: async () => ApiClient.get('club/getallclubs'),
-    getMembers: async (id) => ApiClient.get(`club/getmembers/${id}`),
+    getMembers: async (id) => ApiClient.get(`club/getmemberswithroles/${id}`),
+    updateMemberRole: async (clubId, studentId, role) => 
+        ApiClient.put(`club/changememberrole/${clubId}/members/${studentId}/role`, null, {params: { role }}),
+    kickMember: async (clubId, studentId) => ApiClient.delete(`club/kickmember/${clubId}/members/${studentId}`),
     createClub: async (data) => ApiClient.post('club/createclubadmin', data),
     updateClub: async (data) => ApiClient.put(`club/updateclub/${data.id}`, data),
     deleteClub: async (id) => ApiClient.delete(`club/deleteclub/${id}`),

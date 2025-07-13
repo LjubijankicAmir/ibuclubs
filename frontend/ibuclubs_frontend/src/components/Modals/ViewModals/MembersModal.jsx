@@ -4,13 +4,14 @@ import { Modal, Box, Typography, IconButton, CircularProgress } from '@mui/mater
 import CloseIcon from '@mui/icons-material/Close';
 import { ClubsApi } from '../../../api/apiService';
 import StudentsTable from '../../Tables/StudentsTable';
+import MembersTable from '../../Tables/MembersTable';
 
 const modalStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 700,
+  width: '65vw',
   maxHeight: '80vh',
   bgcolor: 'background.paper',
   boxShadow: 24,
@@ -35,6 +36,37 @@ export default function MembersModal({ open, onClose, club }) {
       .finally(() => setLoading(false));
   }, [open, club]);
 
+  const handleRoleChange = async (studentId, newRole) => {
+    setLoading(true);
+    setError('');
+    try {
+      await ClubsApi.updateMemberRole(club.clubId, studentId, newRole);
+      setMembers(prevMembers => 
+        prevMembers.map(member => 
+          member.studentId === studentId ? { ...member, role: newRole } : member
+        )
+      );
+    } catch (err) {
+      setError('Failed to update member role');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleKick = async (studentId) => {
+    setLoading(true);
+    setError('');
+    try {
+      
+      await ClubsApi.kickMember(club.clubId, studentId);
+      setMembers(ms => ms.filter(m => m.studentId !== studentId));
+    } catch {
+      setError('Failed to remove member');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
@@ -57,10 +89,10 @@ export default function MembersModal({ open, onClose, club }) {
           members.length > 0
             ? (
               <Box sx={{ flex: 1, overflow: 'hidden' }}>
-                <StudentsTable
-                  students={members}
-                  onUpdateStudent={() => {}}
-                  onDeleteStudent={() => {}}
+                <MembersTable
+                  members={members}
+                  onRoleChange={handleRoleChange}
+                  onRemoveMember={handleKick}
                 />
               </Box>
             )
