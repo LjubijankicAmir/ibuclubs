@@ -67,7 +67,9 @@ class ClubDetailsPage extends StatelessWidget {
                 final chat =
                     result.result.isEnrolled &&
                             result.result.socialMediaLink != null
-                        ? true
+                        ? result.result.socialMediaLink!.isNotEmpty
+                            ? true
+                            : false
                         : false;
                 return SingleChildScrollView(
                   child: Stack(
@@ -362,7 +364,9 @@ class ClubDetailsPage extends StatelessWidget {
                                                   },
                                                 ),
                                       ),
-                                    ),
+                                    )
+                                  else
+                                    SizedBox(height: 64),
                                 ],
                               ),
                             ),
