@@ -18,13 +18,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowDevClient", policy =>
+    options.AddPolicy("AllowClients", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy
+            .WithOrigins(
+                "http://localhost:5173",
+                "https://scintillating-perception-production.up.railway.app"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
+
 
 // Controllers
 builder.Services.AddControllers().AddJsonOptions(opts =>
