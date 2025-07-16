@@ -173,7 +173,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.UseCors("AllowDevClient");
+app.UseCors("AllowClients");
 
 
 app.UseSwagger();
